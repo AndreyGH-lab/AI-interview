@@ -1,0 +1,112 @@
+[
+  {
+    "id": "ml_mid_001",
+    "domain": "ml",
+    "topic": "bias_variance",
+    "difficulty": "middle",
+    "question": "Объясни компромисс bias–variance.",
+    "rubric": [
+      "bias — ошибка из-за простоты модели",
+      "variance — чувствительность к данным",
+      "overfitting и underfitting"
+    ],
+    "tags": ["ml", "theory"]
+  },
+  {
+    "id": "ml_mid_002",
+    "domain": "ml",
+    "topic": "cross_validation",
+    "difficulty": "middle",
+    "question": "Как работает k-fold cross-validation?",
+    "rubric": [
+      "разбиение на k частей",
+      "обучение и валидация на разных фолдах"
+    ],
+    "tags": ["ml", "validation"]
+  },
+  {
+    "id": "ml_mid_003",
+    "domain": "ml",
+    "topic": "imbalanced_data",
+    "difficulty": "middle",
+    "question": "Как работать с несбалансированными классами?",
+    "rubric": [
+      "resampling",
+      "class weights",
+      "подходящие метрики"
+    ],
+    "tags": ["ml", "classification"]
+  },
+  {
+    "id": "ml_mid_004",
+    "domain": "ml",
+    "topic": "feature_engineering",
+    "difficulty": "middle",
+    "question": "Что такое feature engineering и зачем он нужен?",
+    "rubric": [
+      "создание новых признаков",
+      "улучшение качества модели"
+    ],
+    "tags": ["ml", "features"]
+  },
+  {
+    "id": "ml_mid_005",
+    "domain": "ml",
+    "topic": "regularization",
+    "difficulty": "middle",
+    "question": "Чем L1-регуляризация отличается от L2?",
+    "rubric": [
+      "L1 — разреженность",
+      "L2 — сглаживание весов"
+    ],
+    "tags": ["ml", "regularization"]
+  },
+  {
+    "id": "ml_mid_006",
+    "domain": "ml",
+    "topic": "tree_models",
+    "difficulty": "middle",
+    "question": "Почему деревья решений склонны к переобучению?",
+    "rubric": [
+      "глубина дерева",
+      "шум в данных"
+    ],
+    "tags": ["ml", "models"]
+  },
+  {
+    "id": "ml_mid_007",
+    "domain": "ml",
+    "topic": "ensemble",
+    "difficulty": "middle",
+    "question": "В чём идея ансамблевых методов?",
+    "rubric": [
+      "объединение нескольких моделей",
+      "снижение ошибки"
+    ],
+    "tags": ["ml", "ensemble"]
+  },
+  {
+    "id": "ml_mid_008",
+    "domain": "ml",
+    "topic": "roc_auc",
+    "difficulty": "middle",
+    "question": "Что показывает ROC-AUC и когда его используют?",
+    "rubric": [
+      "качество бинарной классификации",
+      "независимость от порога"
+    ],
+    "tags": ["ml", "metrics"]
+  },
+  {
+    "id": "ml_mid_009",
+    "domain": "ml",
+    "topic": "pipelines",
+    "difficulty": "middle",
+    "question": "Зачем использовать ML-пайплайны?",
+    "rubric": [
+      "воспроизводимость",
+      "упрощение препроцессинга"
+    ],
+    "tags": ["ml", "engineering"]
+  }
+]

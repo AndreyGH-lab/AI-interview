@@ -1,0 +1,103 @@
+[
+  {
+    "id": "ml_jun_001",
+    "domain": "ml",
+    "topic": "overfitting",
+    "difficulty": "junior",
+    "question": "Что такое overfitting и почему он возникает?",
+    "rubric": [
+      "переобучение на тренировочных данных",
+      "плохое обобщение",
+      "слишком сложная модель",
+      "мало данных"
+    ],
+    "tags": ["ml", "theory"]
+  },
+  {
+    "id": "ml_jun_002",
+    "domain": "ml",
+    "topic": "underfitting",
+    "difficulty": "junior",
+    "question": "Что такое underfitting?",
+    "rubric": [
+      "модель слишком простая",
+      "не улавливает закономерности",
+      "высокая ошибка и на train, и на test"
+    ],
+    "tags": ["ml", "theory"]
+  },
+  {
+    "id": "ml_jun_003",
+    "domain": "ml",
+    "topic": "supervised_learning",
+    "difficulty": "junior",
+    "question": "В чём разница между supervised и unsupervised learning?",
+    "rubric": [
+      "наличие размеченных данных",
+      "примеры supervised и unsupervised задач"
+    ],
+    "tags": ["ml", "basics"]
+  },
+  {
+    "id": "ml_jun_004",
+    "domain": "ml",
+    "topic": "metrics",
+    "difficulty": "junior",
+    "question": "Какие метрики качества классификации ты знаешь?",
+    "rubric": [
+      "accuracy",
+      "precision",
+      "recall",
+      "f1-score"
+    ],
+    "tags": ["ml", "metrics"]
+  },
+  {
+    "id": "ml_jun_005",
+    "domain": "ml",
+    "topic": "train_test_split",
+    "difficulty": "junior",
+    "question": "Зачем делят данные на train и test?",
+    "rubric": [
+      "оценка качества модели",
+      "проверка обобщающей способности"
+    ],
+    "tags": ["ml", "data"]
+  },
+  {
+    "id": "ml_jun_006",
+    "domain": "ml",
+    "topic": "features",
+    "difficulty": "junior",
+    "question": "Что такое признаки (features) в ML?",
+    "rubric": [
+      "входные данные модели",
+      "описание объектов"
+    ],
+    "tags": ["ml", "data"]
+  },
+  {
+    "id": "ml_jun_007",
+    "domain": "ml",
+    "topic": "normalization",
+    "difficulty": "junior",
+    "question": "Зачем нужна нормализация данных?",
+    "rubric": [
+      "приведение признаков к одному масштабу",
+      "улучшение сходимости обучения"
+    ],
+    "tags": ["ml", "preprocessing"]
+  },
+  {
+    "id": "ml_jun_008",
+    "domain": "ml",
+    "topic": "linear_models",
+    "difficulty": "junior",
+    "question": "В каких задачах применяют линейную регрессию?",
+    "rubric": [
+      "предсказание числовых значений",
+      "простые зависимости"
+    ],
+    "tags": ["ml", "models"]
+  }
+]

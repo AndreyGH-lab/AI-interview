@@ -1,0 +1,19 @@
+[project]
+name = "orchestrator"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "gradio>=6.0.1",
+    "langchain-community>=0.4.1",
+    "langchain-core>=1.1.0",
+    "langchain-openai>=1.1.0",
+    "langgraph>=1.0.4",
+    "requests>=2.32.5",
+    "tavily-python>=0.7.13",
+    "sentence-transformers",
+    "faiss-cpu",
+    "transformers>=4.41,<4.45",
+    "huggingface-hub>=0.23,<1.0",
+]

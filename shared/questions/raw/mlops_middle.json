@@ -1,0 +1,101 @@
+[
+  {
+    "id": "mlops_mid_001",
+    "domain": "mlops",
+    "topic": "pipelines",
+    "difficulty": "middle",
+    "question": "Из каких этапов состоит ML-пайплайн в продакшене?",
+    "rubric": [
+      "data ingestion",
+      "training",
+      "deployment",
+      "monitoring"
+    ],
+    "tags": ["mlops", "pipelines"]
+  },
+  {
+    "id": "mlops_mid_002",
+    "domain": "mlops",
+    "topic": "feature_store",
+    "difficulty": "middle",
+    "question": "Что такое feature store и зачем он нужен?",
+    "rubric": [
+      "единый источник признаков",
+      "онлайн и оффлайн доступ"
+    ],
+    "tags": ["mlops", "features"]
+  },
+  {
+    "id": "mlops_mid_003",
+    "domain": "mlops",
+    "topic": "data_validation",
+    "difficulty": "middle",
+    "question": "Как валидировать данные перед обучением?",
+    "rubric": [
+      "схемы",
+      "статистические проверки"
+    ],
+    "tags": ["mlops", "data"]
+  },
+  {
+    "id": "mlops_mid_004",
+    "domain": "mlops",
+    "topic": "canary",
+    "difficulty": "middle",
+    "question": "Что такое canary deployment моделей?",
+    "rubric": [
+      "постепенный rollout",
+      "сравнение версий"
+    ],
+    "tags": ["mlops", "deployment"]
+  },
+  {
+    "id": "mlops_mid_005",
+    "domain": "mlops",
+    "topic": "experiments",
+    "difficulty": "middle",
+    "question": "Как ты отслеживаешь эксперименты?",
+    "rubric": [
+      "метрики",
+      "параметры",
+      "артефакты"
+    ],
+    "tags": ["mlops", "experiments"]
+  },
+  {
+    "id": "mlops_mid_006",
+    "domain": "mlops",
+    "topic": "latency",
+    "difficulty": "middle",
+    "question": "Как снижать latency ML-сервиса?",
+    "rubric": [
+      "batch inference",
+      "оптимизация модели"
+    ],
+    "tags": ["mlops", "performance"]
+  },
+  {
+    "id": "mlops_mid_007",
+    "domain": "mlops",
+    "topic": "rollbacks",
+    "difficulty": "middle",
+    "question": "Как организовать безопасный rollback модели?",
+    "rubric": [
+      "версионирование",
+      "fallback"
+    ],
+    "tags": ["mlops", "deployment"]
+  },
+  {
+    "id": "mlops_mid_008",
+    "domain": "mlops",
+    "topic": "infra",
+    "difficulty": "middle",
+    "question": "Чем ML-инфраструктура отличается от обычной backend-инфры?",
+    "rubric": [
+      "данные как часть системы",
+      "переобучение"
+    ],
+    "tags": ["mlops", "infra"]
+  }
+]

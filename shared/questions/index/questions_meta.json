@@ -1,0 +1,695 @@
+[
+  {
+    "id": "mlops_jun_001",
+    "domain": "mlops",
+    "topic": "mlops_basics",
+    "difficulty": "junior",
+    "question": "Что такое MLOps и зачем он нужен?",
+    "rubric": [
+      "интеграция ML и DevOps",
+      "автоматизация процессов"
+    ],
+    "tags": [
+      "mlops",
+      "basics"
+    ]
+  },
+  {
+    "id": "mlops_jun_002",
+    "domain": "mlops",
+    "topic": "versioning",
+    "difficulty": "junior",
+    "question": "Почему важно версионировать модели и данные?",
+    "rubric": [
+      "воспроизводимость",
+      "откат изменений"
+    ],
+    "tags": [
+      "mlops",
+      "versioning"
+    ]
+  },
+  {
+    "id": "mlops_jun_003",
+    "domain": "mlops",
+    "topic": "docker",
+    "difficulty": "junior",
+    "question": "Зачем использовать Docker в ML-проектах?",
+    "rubric": [
+      "изолированное окружение",
+      "повторяемость"
+    ],
+    "tags": [
+      "mlops",
+      "docker"
+    ]
+  },
+  {
+    "id": "mlops_jun_004",
+    "domain": "mlops",
+    "topic": "ci_cd",
+    "difficulty": "junior",
+    "question": "Что такое CI/CD в контексте ML?",
+    "rubric": [
+      "автотесты",
+      "автодеплой моделей"
+    ],
+    "tags": [
+      "mlops",
+      "cicd"
+    ]
+  },
+  {
+    "id": "mlops_jun_005",
+    "domain": "mlops",
+    "topic": "artifacts",
+    "difficulty": "junior",
+    "question": "Что такое ML-артефакты?",
+    "rubric": [
+      "модели",
+      "скрипты",
+      "метаданные"
+    ],
+    "tags": [
+      "mlops",
+      "artifacts"
+    ]
+  },
+  {
+    "id": "mlops_jun_006",
+    "domain": "mlops",
+    "topic": "monitoring",
+    "difficulty": "junior",
+    "question": "Зачем нужен мониторинг моделей?",
+    "rubric": [
+      "контроль качества",
+      "обнаружение деградации"
+    ],
+    "tags": [
+      "mlops",
+      "monitoring"
+    ]
+  },
+  {
+    "id": "mlops_jun_007",
+    "domain": "mlops",
+    "topic": "logging",
+    "difficulty": "junior",
+    "question": "Что логируют в ML-системах?",
+    "rubric": [
+      "предсказания",
+      "метрики",
+      "ошибки"
+    ],
+    "tags": [
+      "mlops",
+      "logging"
+    ]
+  },
+  {
+    "id": "mlops_jun_008",
+    "domain": "mlops",
+    "topic": "retraining",
+    "difficulty": "junior",
+    "question": "Когда требуется переобучение модели?",
+    "rubric": [
+      "drift данных",
+      "падение качества"
+    ],
+    "tags": [
+      "mlops",
+      "retraining"
+    ]
+  },
+  {
+    "id": "mlops_mid_001",
+    "domain": "mlops",
+    "topic": "pipelines",
+    "difficulty": "middle",
+    "question": "Из каких этапов состоит ML-пайплайн в продакшене?",
+    "rubric": [
+      "data ingestion",
+      "training",
+      "deployment",
+      "monitoring"
+    ],
+    "tags": [
+      "mlops",
+      "pipelines"
+    ]
+  },
+  {
+    "id": "mlops_mid_002",
+    "domain": "mlops",
+    "topic": "feature_store",
+    "difficulty": "middle",
+    "question": "Что такое feature store и зачем он нужен?",
+    "rubric": [
+      "единый источник признаков",
+      "онлайн и оффлайн доступ"
+    ],
+    "tags": [
+      "mlops",
+      "features"
+    ]
+  },
+  {
+    "id": "mlops_mid_003",
+    "domain": "mlops",
+    "topic": "data_validation",
+    "difficulty": "middle",
+    "question": "Как валидировать данные перед обучением?",
+    "rubric": [
+      "схемы",
+      "статистические проверки"
+    ],
+    "tags": [
+      "mlops",
+      "data"
+    ]
+  },
+  {
+    "id": "mlops_mid_004",
+    "domain": "mlops",
+    "topic": "canary",
+    "difficulty": "middle",
+    "question": "Что такое canary deployment моделей?",
+    "rubric": [
+      "постепенный rollout",
+      "сравнение версий"
+    ],
+    "tags": [
+      "mlops",
+      "deployment"
+    ]
+  },
+  {
+    "id": "mlops_mid_005",
+    "domain": "mlops",
+    "topic": "experiments",
+    "difficulty": "middle",
+    "question": "Как ты отслеживаешь эксперименты?",
+    "rubric": [
+      "метрики",
+      "параметры",
+      "артефакты"
+    ],
+    "tags": [
+      "mlops",
+      "experiments"
+    ]
+  },
+  {
+    "id": "mlops_mid_006",
+    "domain": "mlops",
+    "topic": "latency",
+    "difficulty": "middle",
+    "question": "Как снижать latency ML-сервиса?",
+    "rubric": [
+      "batch inference",
+      "оптимизация модели"
+    ],
+    "tags": [
+      "mlops",
+      "performance"
+    ]
+  },
+  {
+    "id": "mlops_mid_007",
+    "domain": "mlops",
+    "topic": "rollbacks",
+    "difficulty": "middle",
+    "question": "Как организовать безопасный rollback модели?",
+    "rubric": [
+      "версионирование",
+      "fallback"
+    ],
+    "tags": [
+      "mlops",
+      "deployment"
+    ]
+  },
+  {
+    "id": "mlops_mid_008",
+    "domain": "mlops",
+    "topic": "infra",
+    "difficulty": "middle",
+    "question": "Чем ML-инфраструктура отличается от обычной backend-инфры?",
+    "rubric": [
+      "данные как часть системы",
+      "переобучение"
+    ],
+    "tags": [
+      "mlops",
+      "infra"
+    ]
+  },
+  {
+    "id": "mlops_sen_001",
+    "domain": "mlops",
+    "topic": "drift",
+    "difficulty": "senior",
+    "question": "Как ты строишь систему обнаружения data и concept drift?",
+    "rubric": [
+      "метрики распределений",
+      "алерты",
+      "retraining стратегии"
+    ],
+    "tags": [
+      "mlops",
+      "monitoring"
+    ]
+  },
+  {
+    "id": "mlops_sen_002",
+    "domain": "mlops",
+    "topic": "architecture",
+    "difficulty": "senior",
+    "question": "Как бы ты спроектировал ML-платформу для нескольких команд?",
+    "rubric": [
+      "feature store",
+      "model registry",
+      "CI/CD"
+    ],
+    "tags": [
+      "mlops",
+      "architecture"
+    ]
+  },
+  {
+    "id": "mlops_sen_003",
+    "domain": "mlops",
+    "topic": "costs",
+    "difficulty": "senior",
+    "question": "Как оптимизировать стоимость ML-инфраструктуры?",
+    "rubric": [
+      "batch inference",
+      "autoscaling",
+      "выбор моделей"
+    ],
+    "tags": [
+      "mlops",
+      "costs"
+    ]
+  },
+  {
+    "id": "mlops_sen_004",
+    "domain": "mlops",
+    "topic": "governance",
+    "difficulty": "senior",
+    "question": "Какие риски и требования к ML в enterprise-системах?",
+    "rubric": [
+      "безопасность",
+      "аудит",
+      "compliance"
+    ],
+    "tags": [
+      "mlops",
+      "enterprise"
+    ]
+  },
+  {
+    "id": "ml_jun_001",
+    "domain": "ml",
+    "topic": "overfitting",
+    "difficulty": "junior",
+    "question": "Что такое overfitting и почему он возникает?",
+    "rubric": [
+      "переобучение на тренировочных данных",
+      "плохое обобщение",
+      "слишком сложная модель",
+      "мало данных"
+    ],
+    "tags": [
+      "ml",
+      "theory"
+    ]
+  },
+  {
+    "id": "ml_jun_002",
+    "domain": "ml",
+    "topic": "underfitting",
+    "difficulty": "junior",
+    "question": "Что такое underfitting?",
+    "rubric": [
+      "модель слишком простая",
+      "не улавливает закономерности",
+      "высокая ошибка и на train, и на test"
+    ],
+    "tags": [
+      "ml",
+      "theory"
+    ]
+  },
+  {
+    "id": "ml_jun_003",
+    "domain": "ml",
+    "topic": "supervised_learning",
+    "difficulty": "junior",
+    "question": "В чём разница между supervised и unsupervised learning?",
+    "rubric": [
+      "наличие размеченных данных",
+      "примеры supervised и unsupervised задач"
+    ],
+    "tags": [
+      "ml",
+      "basics"
+    ]
+  },
+  {
+    "id": "ml_jun_004",
+    "domain": "ml",
+    "topic": "metrics",
+    "difficulty": "junior",
+    "question": "Какие метрики качества классификации ты знаешь?",
+    "rubric": [
+      "accuracy",
+      "precision",
+      "recall",
+      "f1-score"
+    ],
+    "tags": [
+      "ml",
+      "metrics"
+    ]
+  },
+  {
+    "id": "ml_jun_005",
+    "domain": "ml",
+    "topic": "train_test_split",
+    "difficulty": "junior",
+    "question": "Зачем делят данные на train и test?",
+    "rubric": [
+      "оценка качества модели",
+      "проверка обобщающей способности"
+    ],
+    "tags": [
+      "ml",
+      "data"
+    ]
+  },
+  {
+    "id": "ml_jun_006",
+    "domain": "ml",
+    "topic": "features",
+    "difficulty": "junior",
+    "question": "Что такое признаки (features) в ML?",
+    "rubric": [
+      "входные данные модели",
+      "описание объектов"
+    ],
+    "tags": [
+      "ml",
+      "data"
+    ]
+  },
+  {
+    "id": "ml_jun_007",
+    "domain": "ml",
+    "topic": "normalization",
+    "difficulty": "junior",
+    "question": "Зачем нужна нормализация данных?",
+    "rubric": [
+      "приведение признаков к одному масштабу",
+      "улучшение сходимости обучения"
+    ],
+    "tags": [
+      "ml",
+      "preprocessing"
+    ]
+  },
+  {
+    "id": "ml_jun_008",
+    "domain": "ml",
+    "topic": "linear_models",
+    "difficulty": "junior",
+    "question": "В каких задачах применяют линейную регрессию?",
+    "rubric": [
+      "предсказание числовых значений",
+      "простые зависимости"
+    ],
+    "tags": [
+      "ml",
+      "models"
+    ]
+  },
+  {
+    "id": "ml_mid_001",
+    "domain": "ml",
+    "topic": "bias_variance",
+    "difficulty": "middle",
+    "question": "Объясни компромисс bias–variance.",
+    "rubric": [
+      "bias — ошибка из-за простоты модели",
+      "variance — чувствительность к данным",
+      "overfitting и underfitting"
+    ],
+    "tags": [
+      "ml",
+      "theory"
+    ]
+  },
+  {
+    "id": "ml_mid_002",
+    "domain": "ml",
+    "topic": "cross_validation",
+    "difficulty": "middle",
+    "question": "Как работает k-fold cross-validation?",
+    "rubric": [
+      "разбиение на k частей",
+      "обучение и валидация на разных фолдах"
+    ],
+    "tags": [
+      "ml",
+      "validation"
+    ]
+  },
+  {
+    "id": "ml_mid_003",
+    "domain": "ml",
+    "topic": "imbalanced_data",
+    "difficulty": "middle",
+    "question": "Как работать с несбалансированными классами?",
+    "rubric": [
+      "resampling",
+      "class weights",
+      "подходящие метрики"
+    ],
+    "tags": [
+      "ml",
+      "classification"
+    ]
+  },
+  {
+    "id": "ml_mid_004",
+    "domain": "ml",
+    "topic": "feature_engineering",
+    "difficulty": "middle",
+    "question": "Что такое feature engineering и зачем он нужен?",
+    "rubric": [
+      "создание новых признаков",
+      "улучшение качества модели"
+    ],
+    "tags": [
+      "ml",
+      "features"
+    ]
+  },
+  {
+    "id": "ml_mid_005",
+    "domain": "ml",
+    "topic": "regularization",
+    "difficulty": "middle",
+    "question": "Чем L1-регуляризация отличается от L2?",
+    "rubric": [
+      "L1 — разреженность",
+      "L2 — сглаживание весов"
+    ],
+    "tags": [
+      "ml",
+      "regularization"
+    ]
+  },
+  {
+    "id": "ml_mid_006",
+    "domain": "ml",
+    "topic": "tree_models",
+    "difficulty": "middle",
+    "question": "Почему деревья решений склонны к переобучению?",
+    "rubric": [
+      "глубина дерева",
+      "шум в данных"
+    ],
+    "tags": [
+      "ml",
+      "models"
+    ]
+  },
+  {
+    "id": "ml_mid_007",
+    "domain": "ml",
+    "topic": "ensemble",
+    "difficulty": "middle",
+    "question": "В чём идея ансамблевых методов?",
+    "rubric": [
+      "объединение нескольких моделей",
+      "снижение ошибки"
+    ],
+    "tags": [
+      "ml",
+      "ensemble"
+    ]
+  },
+  {
+    "id": "ml_mid_008",
+    "domain": "ml",
+    "topic": "roc_auc",
+    "difficulty": "middle",
+    "question": "Что показывает ROC-AUC и когда его используют?",
+    "rubric": [
+      "качество бинарной классификации",
+      "независимость от порога"
+    ],
+    "tags": [
+      "ml",
+      "metrics"
+    ]
+  },
+  {
+    "id": "ml_mid_009",
+    "domain": "ml",
+    "topic": "pipelines",
+    "difficulty": "middle",
+    "question": "Зачем использовать ML-пайплайны?",
+    "rubric": [
+      "воспроизводимость",
+      "упрощение препроцессинга"
+    ],
+    "tags": [
+      "ml",
+      "engineering"
+    ]
+  },
+  {
+    "id": "ml_sen_001",
+    "domain": "ml",
+    "topic": "data_leakage",
+    "difficulty": "senior",
+    "question": "Что такое data leakage и как его избежать?",
+    "rubric": [
+      "утечка информации из будущего",
+      "ошибки в split и preprocessing"
+    ],
+    "tags": [
+      "ml",
+      "pitfalls"
+    ]
+  },
+  {
+    "id": "ml_sen_002",
+    "domain": "ml",
+    "topic": "model_selection",
+    "difficulty": "senior",
+    "question": "Как ты выбираешь модель под конкретную задачу?",
+    "rubric": [
+      "тип данных",
+      "размер датасета",
+      "ограничения по latency"
+    ],
+    "tags": [
+      "ml",
+      "decision_making"
+    ]
+  },
+  {
+    "id": "ml_sen_003",
+    "domain": "ml",
+    "topic": "feature_drift",
+    "difficulty": "senior",
+    "question": "Как обнаружить drift признаков в продакшене?",
+    "rubric": [
+      "статистические тесты",
+      "мониторинг распределений"
+    ],
+    "tags": [
+      "ml",
+      "monitoring"
+    ]
+  },
+  {
+    "id": "ml_sen_004",
+    "domain": "ml",
+    "topic": "interpretability",
+    "difficulty": "senior",
+    "question": "Как ты объясняешь решения сложных моделей?",
+    "rubric": [
+      "SHAP",
+      "LIME",
+      "feature importance"
+    ],
+    "tags": [
+      "ml",
+      "interpretability"
+    ]
+  },
+  {
+    "id": "ml_sen_005",
+    "domain": "ml",
+    "topic": "time_series",
+    "difficulty": "senior",
+    "question": "Чем временные ряды отличаются от обычных данных?",
+    "rubric": [
+      "временная зависимость",
+      "запрет shuffle"
+    ],
+    "tags": [
+      "ml",
+      "time_series"
+    ]
+  },
+  {
+    "id": "ml_sen_006",
+    "domain": "ml",
+    "topic": "online_learning",
+    "difficulty": "senior",
+    "question": "Когда стоит использовать online learning?",
+    "rubric": [
+      "потоковые данные",
+      "частое обновление модели"
+    ],
+    "tags": [
+      "ml",
+      "learning"
+    ]
+  },
+  {
+    "id": "ml_sen_007",
+    "domain": "ml",
+    "topic": "evaluation",
+    "difficulty": "senior",
+    "question": "Почему offline-метрики могут не отражать реальное качество?",
+    "rubric": [
+      "смещение данных",
+      "разница между train и prod"
+    ],
+    "tags": [
+      "ml",
+      "evaluation"
+    ]
+  },
+  {
+    "id": "ml_sen_008",
+    "domain": "ml",
+    "topic": "deployment_tradeoffs",
+    "difficulty": "senior",
+    "question": "Как балансировать качество модели и latency?",
+    "rubric": [
+      "упрощение модели",
+      "batch vs real-time"
+    ],
+    "tags": [
+      "ml",
+      "production"
+    ]
+  }
+]

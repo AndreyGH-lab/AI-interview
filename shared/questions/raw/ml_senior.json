@@ -1,0 +1,100 @@
+[
+  {
+    "id": "ml_sen_001",
+    "domain": "ml",
+    "topic": "data_leakage",
+    "difficulty": "senior",
+    "question": "Что такое data leakage и как его избежать?",
+    "rubric": [
+      "утечка информации из будущего",
+      "ошибки в split и preprocessing"
+    ],
+    "tags": ["ml", "pitfalls"]
+  },
+  {
+    "id": "ml_sen_002",
+    "domain": "ml",
+    "topic": "model_selection",
+    "difficulty": "senior",
+    "question": "Как ты выбираешь модель под конкретную задачу?",
+    "rubric": [
+      "тип данных",
+      "размер датасета",
+      "ограничения по latency"
+    ],
+    "tags": ["ml", "decision_making"]
+  },
+  {
+    "id": "ml_sen_003",
+    "domain": "ml",
+    "topic": "feature_drift",
+    "difficulty": "senior",
+    "question": "Как обнаружить drift признаков в продакшене?",
+    "rubric": [
+      "статистические тесты",
+      "мониторинг распределений"
+    ],
+    "tags": ["ml", "monitoring"]
+  },
+  {
+    "id": "ml_sen_004",
+    "domain": "ml",
+    "topic": "interpretability",
+    "difficulty": "senior",
+    "question": "Как ты объясняешь решения сложных моделей?",
+    "rubric": [
+      "SHAP",
+      "LIME",
+      "feature importance"
+    ],
+    "tags": ["ml", "interpretability"]
+  },
+  {
+    "id": "ml_sen_005",
+    "domain": "ml",
+    "topic": "time_series",
+    "difficulty": "senior",
+    "question": "Чем временные ряды отличаются от обычных данных?",
+    "rubric": [
+      "временная зависимость",
+      "запрет shuffle"
+    ],
+    "tags": ["ml", "time_series"]
+  },
+  {
+    "id": "ml_sen_006",
+    "domain": "ml",
+    "topic": "online_learning",
+    "difficulty": "senior",
+    "question": "Когда стоит использовать online learning?",
+    "rubric": [
+      "потоковые данные",
+      "частое обновление модели"
+    ],
+    "tags": ["ml", "learning"]
+  },
+  {
+    "id": "ml_sen_007",
+    "domain": "ml",
+    "topic": "evaluation",
+    "difficulty": "senior",
+    "question": "Почему offline-метрики могут не отражать реальное качество?",
+    "rubric": [
+      "смещение данных",
+      "разница между train и prod"
+    ],
+    "tags": ["ml", "evaluation"]
+  },
+  {
+    "id": "ml_sen_008",
+    "domain": "ml",
+    "topic": "deployment_tradeoffs",
+    "difficulty": "senior",
+    "question": "Как балансировать качество модели и latency?",
+    "rubric": [
+      "упрощение модели",
+      "batch vs real-time"
+    ],
+    "tags": ["ml", "production"]
+  }
+]

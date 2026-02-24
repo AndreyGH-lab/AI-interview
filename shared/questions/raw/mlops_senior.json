@@ -1,0 +1,54 @@
+[
+  {
+    "id": "mlops_sen_001",
+    "domain": "mlops",
+    "topic": "drift",
+    "difficulty": "senior",
+    "question": "Как ты строишь систему обнаружения data и concept drift?",
+    "rubric": [
+      "метрики распределений",
+      "алерты",
+      "retraining стратегии"
+    ],
+    "tags": ["mlops", "monitoring"]
+  },
+  {
+    "id": "mlops_sen_002",
+    "domain": "mlops",
+    "topic": "architecture",
+    "difficulty": "senior",
+    "question": "Как бы ты спроектировал ML-платформу для нескольких команд?",
+    "rubric": [
+      "feature store",
+      "model registry",
+      "CI/CD"
+    ],
+    "tags": ["mlops", "architecture"]
+  },
+  {
+    "id": "mlops_sen_003",
+    "domain": "mlops",
+    "topic": "costs",
+    "difficulty": "senior",
+    "question": "Как оптимизировать стоимость ML-инфраструктуры?",
+    "rubric": [
+      "batch inference",
+      "autoscaling",
+      "выбор моделей"
+    ],
+    "tags": ["mlops", "costs"]
+  },
+  {
+    "id": "mlops_sen_004",
+    "domain": "mlops",
+    "topic": "governance",
+    "difficulty": "senior",
+    "question": "Какие риски и требования к ML в enterprise-системах?",
+    "rubric": [
+      "безопасность",
+      "аудит",
+      "compliance"
+    ],
+    "tags": ["mlops", "enterprise"]
+  }
+]

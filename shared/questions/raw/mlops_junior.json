@@ -1,0 +1,100 @@
+[
+  {
+    "id": "mlops_jun_001",
+    "domain": "mlops",
+    "topic": "mlops_basics",
+    "difficulty": "junior",
+    "question": "Что такое MLOps и зачем он нужен?",
+    "rubric": [
+      "интеграция ML и DevOps",
+      "автоматизация процессов"
+    ],
+    "tags": ["mlops", "basics"]
+  },
+  {
+    "id": "mlops_jun_002",
+    "domain": "mlops",
+    "topic": "versioning",
+    "difficulty": "junior",
+    "question": "Почему важно версионировать модели и данные?",
+    "rubric": [
+      "воспроизводимость",
+      "откат изменений"
+    ],
+    "tags": ["mlops", "versioning"]
+  },
+  {
+    "id": "mlops_jun_003",
+    "domain": "mlops",
+    "topic": "docker",
+    "difficulty": "junior",
+    "question": "Зачем использовать Docker в ML-проектах?",
+    "rubric": [
+      "изолированное окружение",
+      "повторяемость"
+    ],
+    "tags": ["mlops", "docker"]
+  },
+  {
+    "id": "mlops_jun_004",
+    "domain": "mlops",
+    "topic": "ci_cd",
+    "difficulty": "junior",
+    "question": "Что такое CI/CD в контексте ML?",
+    "rubric": [
+      "автотесты",
+      "автодеплой моделей"
+    ],
+    "tags": ["mlops", "cicd"]
+  },
+  {
+    "id": "mlops_jun_005",
+    "domain": "mlops",
+    "topic": "artifacts",
+    "difficulty": "junior",
+    "question": "Что такое ML-артефакты?",
+    "rubric": [
+      "модели",
+      "скрипты",
+      "метаданные"
+    ],
+    "tags": ["mlops", "artifacts"]
+  },
+  {
+    "id": "mlops_jun_006",
+    "domain": "mlops",
+    "topic": "monitoring",
+    "difficulty": "junior",
+    "question": "Зачем нужен мониторинг моделей?",
+    "rubric": [
+      "контроль качества",
+      "обнаружение деградации"
+    ],
+    "tags": ["mlops", "monitoring"]
+  },
+  {
+    "id": "mlops_jun_007",
+    "domain": "mlops",
+    "topic": "logging",
+    "difficulty": "junior",
+    "question": "Что логируют в ML-системах?",
+    "rubric": [
+      "предсказания",
+      "метрики",
+      "ошибки"
+    ],
+    "tags": ["mlops", "logging"]
+  },
+  {
+    "id": "mlops_jun_008",
+    "domain": "mlops",
+    "topic": "retraining",
+    "difficulty": "junior",
+    "question": "Когда требуется переобучение модели?",
+    "rubric": [
+      "drift данных",
+      "падение качества"
+    ],
+    "tags": ["mlops", "retraining"]
+  }
+]
