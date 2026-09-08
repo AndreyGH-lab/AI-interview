@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import random
 import re
 from functools import lru_cache
 from typing import Annotated, Any, Dict, List, Optional
@@ -196,8 +197,10 @@ def _pick_first_question_from_bank(
     domains: List[str],
     difficulty: str,
     asked_ids: List[str],
+    rng: Optional[random.Random] = None,
 ) -> Optional[Candidate]:
     _, meta = load_index()
+    suitable: List[Candidate] = []
     for q in meta:
         if q["id"] in asked_ids:
             continue
@@ -206,16 +209,22 @@ def _pick_first_question_from_bank(
         if not difficulty_allowed(q.get("difficulty", "junior"), difficulty):
             continue
 
-        return Candidate(
-            id=q["id"],
-            domain=q["domain"],
-            topic=q["topic"],
-            difficulty=q["difficulty"],
-            question=q["question"],
-            rubric=q.get("rubric", []),
-            score=0.0,
+        suitable.append(
+            Candidate(
+                id=q["id"],
+                domain=q["domain"],
+                topic=q["topic"],
+                difficulty=q["difficulty"],
+                question=q["question"],
+                rubric=q.get("rubric", []),
+                score=0.0,
+            )
         )
-    return None
+
+    if not suitable:
+        return None
+
+    return (rng or random).choice(suitable)
 
 
 
