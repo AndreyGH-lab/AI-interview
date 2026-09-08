@@ -23,6 +23,7 @@ services:
       - "${WEB_PORT:-7860}:7860"
     environment:
       LM_STUDIO_BASE_URL: "http://host.docker.internal:1234/v1"
+      LM_STUDIO_API_KEY: "${LM_STUDIO_API_KEY:-lm-studio}"
       MODEL_NAME: "${MODEL_NAME:-qwen2.5-vl-3b-instruct}"
       STT_URL: "http://stt:8000/transcribe"
       EMBEDDING_MODEL_NAME: "${EMBEDDING_MODEL_NAME:-sentence-transformers/all-MiniLM-L6-v2}"
