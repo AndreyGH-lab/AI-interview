@@ -118,7 +118,10 @@ def build_and_save_index():
 
 def load_index():
     if not FAISS_INDEX_PATH.exists():
-        raise FileNotFoundError("FAISS индекс не найден. Сначала запусти build_and_save_index().")
+        raise FileNotFoundError(
+            f"FAISS индекс не найден по пути {FAISS_INDEX_PATH}. Собери его командой:\n"
+            "python -m services.llm_service.rag.store"
+        )
 
     index = faiss.read_index(str(FAISS_INDEX_PATH))
 

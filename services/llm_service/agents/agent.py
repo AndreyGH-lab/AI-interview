@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+from functools import lru_cache
 from typing import Annotated, Any, Dict, List, Optional
 from typing_extensions import TypedDict
 
@@ -51,13 +52,15 @@ SELECTOR_SYSTEM_PROMPT = """
 - не выбирай id из asked_ids
 """.strip()
 
-llm_selector = ChatOpenAI(
-    base_url=LM_STUDIO_BASE_URL,
-    api_key=LM_STUDIO_API_KEY,
-    model=MODEL_NAME,
-    temperature=0,
-    max_tokens=96,
-)
+@lru_cache(maxsize=1)
+def get_selector_llm() -> ChatOpenAI:
+    return ChatOpenAI(
+        base_url=LM_STUDIO_BASE_URL,
+        api_key=LM_STUDIO_API_KEY,
+        model=MODEL_NAME,
+        temperature=0,
+        max_tokens=96,
+    )
 
 
 RENDER_SYSTEM_PROMPT = """
@@ -76,13 +79,15 @@ RENDER_SYSTEM_PROMPT = """
 {"prefix": "..."}
 """.strip()
 
-llm_renderer = ChatOpenAI(
-    base_url=LM_STUDIO_BASE_URL,
-    api_key=LM_STUDIO_API_KEY,
-    model=MODEL_NAME,
-    temperature=0,
-    max_tokens=96,
-)
+@lru_cache(maxsize=1)
+def get_renderer_llm() -> ChatOpenAI:
+    return ChatOpenAI(
+        base_url=LM_STUDIO_BASE_URL,
+        api_key=LM_STUDIO_API_KEY,
+        model=MODEL_NAME,
+        temperature=0,
+        max_tokens=96,
+    )
 
 FOLLOWUP_SYSTEM_PROMPT = """
 Ты — ИИ-интервьюер.
@@ -103,13 +108,15 @@ FOLLOWUP_SYSTEM_PROMPT = """
 ОДНА строка, начинается строго с "Вопрос: "
 """.strip()
 
-llm_followup = ChatOpenAI(
-    base_url=LM_STUDIO_BASE_URL,
-    api_key=LM_STUDIO_API_KEY,
-    model=MODEL_NAME,
-    temperature=0,
-    max_tokens=128,
-)
+@lru_cache(maxsize=1)
+def get_followup_llm() -> ChatOpenAI:
+    return ChatOpenAI(
+        base_url=LM_STUDIO_BASE_URL,
+        api_key=LM_STUDIO_API_KEY,
+        model=MODEL_NAME,
+        temperature=0,
+        max_tokens=128,
+    )
 
 DRIFT_SYSTEM_PROMPT = """
 Ты — ассистент, который проверяет, отвечает ли кандидат ПО ТЕМЕ вопроса.
@@ -131,13 +138,15 @@ DRIFT_SYSTEM_PROMPT = """
 - никакого markdown, только JSON
 """.strip()
 
-llm_drift = ChatOpenAI(
-    base_url=LM_STUDIO_BASE_URL,
-    api_key=LM_STUDIO_API_KEY,
-    model=MODEL_NAME,
-    temperature=0,
-    max_tokens=48,
-)
+@lru_cache(maxsize=1)
+def get_drift_llm() -> ChatOpenAI:
+    return ChatOpenAI(
+        base_url=LM_STUDIO_BASE_URL,
+        api_key=LM_STUDIO_API_KEY,
+        model=MODEL_NAME,
+        temperature=0,
+        max_tokens=48,
+    )
 
 
 class Candidate(TypedDict):
@@ -311,7 +320,7 @@ def evaluate_node(state: State) -> Dict[str, Any]:
     }
     on_topic = True
     try:
-        resp = llm_drift.invoke(
+        resp = get_drift_llm().invoke(
             [
                 SystemMessage(content=DRIFT_SYSTEM_PROMPT),
                 HumanMessage(content=json.dumps(drift_payload, ensure_ascii=False)),
@@ -389,7 +398,7 @@ def followup_node(state: State) -> Dict[str, Any]:
         },
     }
 
-    resp = llm_followup.invoke(
+    resp = get_followup_llm().invoke(
         [
             SystemMessage(content=FOLLOWUP_SYSTEM_PROMPT),
             HumanMessage(content=json.dumps(payload, ensure_ascii=False)),
@@ -477,7 +486,7 @@ def select_node(state: State) -> Dict[str, Any]:
         ],
     }
 
-    resp = llm_selector.invoke(
+    resp = get_selector_llm().invoke(
         [
             SystemMessage(content=SELECTOR_SYSTEM_PROMPT),
             HumanMessage(content=json.dumps(payload, ensure_ascii=False)),
@@ -566,7 +575,7 @@ def render_node(state: State) -> Dict[str, Any]:
 
     prefix = ""
     try:
-        resp = llm_renderer.invoke(
+        resp = get_renderer_llm().invoke(
             [
                 SystemMessage(content=RENDER_SYSTEM_PROMPT),
                 HumanMessage(content=json.dumps(payload, ensure_ascii=False)),
