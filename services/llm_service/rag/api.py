@@ -31,7 +31,7 @@ def retrieve_questions(
         if q["domain"] != domain:
             continue
 
-        if not _difficulty_allowed(q["difficulty"], difficulty):
+        if not difficulty_allowed(q["difficulty"], difficulty):
             continue
 
         results.append(
@@ -53,7 +53,7 @@ def retrieve_questions(
     return results
 
 
-def _difficulty_allowed(q_diff: str, current_diff: str) -> bool:
+def difficulty_allowed(q_diff: str, current_diff: str) -> bool:
     """
     Разрешаем вопросы текущего уровня и ниже.
     """

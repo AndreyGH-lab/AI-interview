@@ -1,13 +1,17 @@
+from __future__ import annotations
+
 import json
 from pathlib import Path
 from dataclasses import dataclass
-from typing import List
+from typing import List, TYPE_CHECKING
 
 import faiss
 import numpy as np
-from sentence_transformers import SentenceTransformer
 
 from shared.config import EMBEDDING_MODEL_NAME
+
+if TYPE_CHECKING:
+    from sentence_transformers import SentenceTransformer
 
 
 
@@ -79,6 +83,9 @@ def load_questions() -> List[Question]:
 #Index
 
 def build_and_save_index():
+    # импорт внутри функции: sentence_transformers тянет torch
+    from sentence_transformers import SentenceTransformer
+
     INDEX_DIR.mkdir(parents=True, exist_ok=True)
 
     questions = load_questions()

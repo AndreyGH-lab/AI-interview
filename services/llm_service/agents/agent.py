@@ -13,7 +13,12 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langgraph.checkpoint.memory import MemorySaver
 
-from services.llm_service.rag.api import retrieve_questions, _difficulty_allowed
+from services.llm_service.rag.api import retrieve_questions, difficulty_allowed
+from services.llm_service.agents.text_utils import (
+    safe_json_parse,
+    ensure_question_prefix,
+    sanitize_prefix,
+)
 from services.llm_service.rag.store import load_index
 from services.llm_service.evaluation.evaluator import evaluate_answer
 
@@ -179,30 +184,12 @@ class State(TypedDict):
 
 
 
-def _safe_json_parse(text: str) -> Dict[str, Any]:
-    cleaned = text.strip()
-    cleaned = re.sub(r"^```json\s*", "", cleaned, flags=re.IGNORECASE)
-    cleaned = re.sub(r"^```", "", cleaned)
-    cleaned = re.sub(r"\s*```$", "", cleaned)
-    m = re.search(r"\{.*\}", cleaned, flags=re.DOTALL)
-    if m:
-        cleaned = m.group(0)
-    return json.loads(cleaned)
-
-
 def _extract_last_user_text(messages: List[BaseMessage]) -> Optional[str]:
     for msg in reversed(messages):
         if isinstance(msg, HumanMessage):
             txt = (msg.content or "").strip()
             return txt if txt else None
     return None
-
-
-def _ensure_question_prefix(text: str) -> str:
-    t = (text or "").strip().replace("\n", " ")
-    if not t.startswith("Вопрос:"):
-        t = "Вопрос: " + t
-    return t
 
 
 def _pick_first_question_from_bank(
@@ -216,7 +203,7 @@ def _pick_first_question_from_bank(
             continue
         if q.get("domain") not in domains:
             continue
-        if not _difficulty_allowed(q.get("difficulty", "junior"), difficulty):
+        if not difficulty_allowed(q.get("difficulty", "junior"), difficulty):
             continue
 
         return Candidate(
@@ -326,7 +313,7 @@ def evaluate_node(state: State) -> Dict[str, Any]:
                 HumanMessage(content=json.dumps(drift_payload, ensure_ascii=False)),
             ]
         )
-        data = _safe_json_parse(resp.content)
+        data = safe_json_parse(resp.content)
         on_topic = bool(data.get("on_topic", True))
     except Exception:
         on_topic = True
@@ -405,7 +392,7 @@ def followup_node(state: State) -> Dict[str, Any]:
         ]
     )
 
-    msg_text = _ensure_question_prefix(resp.content)
+    msg_text = ensure_question_prefix(resp.content)
     return {
         "messages": [AIMessage(content=msg_text)],
         "candidates": None,
@@ -495,7 +482,7 @@ def select_node(state: State) -> Dict[str, Any]:
 
     chosen_id: Optional[str] = None
     try:
-        data = _safe_json_parse(resp.content)
+        data = safe_json_parse(resp.content)
         chosen_id = data.get("question_id")
     except Exception:
         chosen_id = None
@@ -519,43 +506,6 @@ def select_node(state: State) -> Dict[str, Any]:
         "last_rubric": chosen["rubric"],
         "selected": chosen,
     }
-
-def _sanitize_prefix(prefix: str, original_question: str) -> str:
-    p = (prefix or "").strip().replace("\n", " ")
-    q = (original_question or "").strip()
-    if not p:
-        return ""
-
-
-    if len(p) > 120:
-        return ""
-
-    low_p = p.lower()
-    low_q = q.lower()
-
-    # мусорные паттерны
-    if "..." in p:
-        return ""
-
-    banned_starts = (
-        "что такое", "из каких", "зачем", "почему", "какие",
-        "mlops", "ml-пайплайн", "пайплайн", "это", "— это", "- это"
-    )
-    if low_p.startswith(banned_starts):
-        return ""
-
-    if "?" in p:
-        return ""
-
-
-    if len(q) >= 20 and (low_q[:20] in low_p or low_q[-20:] in low_p):
-        return ""
-
-    if not p.endswith((".", ":", "—")):
-        p += "."
-
-    return p
-
 
 def render_node(state: State) -> Dict[str, Any]:
     selected = state.get("selected")
@@ -581,9 +531,9 @@ def render_node(state: State) -> Dict[str, Any]:
                 HumanMessage(content=json.dumps(payload, ensure_ascii=False)),
             ]
         )
-        data = _safe_json_parse(resp.content)
+        data = safe_json_parse(resp.content)
         raw_prefix = (data.get("prefix") or "")
-        prefix = _sanitize_prefix(raw_prefix, selected["question"])
+        prefix = sanitize_prefix(raw_prefix, selected["question"])
     except Exception:
         prefix = ""
 
