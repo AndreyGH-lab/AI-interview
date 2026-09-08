@@ -12,7 +12,7 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langgraph.checkpoint.memory import MemorySaver
 
-from services.llm_service.rag.api import retrieve_questions
+from services.llm_service.rag.api import retrieve_questions, _difficulty_allowed
 from services.llm_service.rag.store import load_index
 from services.llm_service.evaluation.evaluator import evaluate_answer
 
@@ -168,11 +168,6 @@ class State(TypedDict):
 
     is_first_turn: bool
 
-
-
-def _difficulty_allowed(q_diff: str, current_diff: str) -> bool:
-    order = {"junior": 0, "middle": 1, "senior": 2}
-    return order.get(q_diff, 0) <= order.get(current_diff, 0)
 
 
 def _safe_json_parse(text: str) -> Dict[str, Any]:

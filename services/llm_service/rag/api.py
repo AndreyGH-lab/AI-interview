@@ -58,4 +58,4 @@ def _difficulty_allowed(q_diff: str, current_diff: str) -> bool:
     Разрешаем вопросы текущего уровня и ниже.
     """
     order = {"junior": 0, "middle": 1, "senior": 2}
-    return order[q_diff] <= order[current_diff]
+    return order.get(q_diff, 0) <= order.get(current_diff, 0)

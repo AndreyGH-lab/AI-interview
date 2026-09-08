@@ -22,6 +22,8 @@ SYSTEM_PROMPT = """
 Оценивай строго по ожидаемым ключевым аспектам (rubric).
 Не додумывай за кандидата.
 Если аспект упомянут частично — считай его покрытым.
+"score" — число от 0.0 до 1.0, где 0.0 означает, что ни один аспект rubric
+не раскрыт, а 1.0 — что раскрыты все аспекты.
 "comment" должен быть на русском языке.
 Верни результат СТРОГО в формате JSON без пояснений и без markdown.
 """
@@ -37,6 +39,16 @@ def safe_json_parse(text: str) -> Dict[str, Any]:
     cleaned = re.sub(r"\s*```$", "", cleaned)
 
     return json.loads(cleaned)
+
+
+def _clamp_score(value: Any) -> float:
+    """
+    Приводит score к диапазону [0.0, 1.0]; некорректное значение — 0.0.
+    """
+    try:
+        return max(0.0, min(1.0, float(value)))
+    except (TypeError, ValueError):
+        return 0.0
 
 
 def evaluate_answer(
@@ -59,7 +71,7 @@ def evaluate_answer(
 Ожидаемые ключевые аспекты:
 {rubric}
 
-Верни JSON следующего вида:
+Верни JSON следующего вида (score — число от 0.0 до 1.0):
 {{
   "covered": [],
   "missed": [],
@@ -83,7 +95,7 @@ def evaluate_answer(
         return {
             "covered": data.get("covered", []),
             "missed": data.get("missed", []),
-            "score": float(data.get("score", 0.0)),
+            "score": _clamp_score(data.get("score", 0.0)),
             "comment": data.get("comment", ""),
             "raw": raw_text,
         }
