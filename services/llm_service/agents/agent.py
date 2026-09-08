@@ -16,15 +16,13 @@ from services.llm_service.rag.api import retrieve_questions
 from services.llm_service.rag.store import load_index
 from services.llm_service.evaluation.evaluator import evaluate_answer
 
-
-LM_STUDIO_BASE_URL = "http://127.0.0.1:1234/v1"
-MODEL_NAME = "qwen2.5-vl-3b-instruct"
-
-
-DRIFT_SCORE_THRESHOLD = 0.45
-
-
-ON_TOPIC_OVERRIDE_SCORE = 0.80
+from shared.config import (
+    LM_STUDIO_BASE_URL,
+    LM_STUDIO_API_KEY,
+    MODEL_NAME,
+    DRIFT_SCORE_THRESHOLD,
+    ON_TOPIC_OVERRIDE_SCORE,
+)
 
 
 
@@ -55,7 +53,7 @@ SELECTOR_SYSTEM_PROMPT = """
 
 llm_selector = ChatOpenAI(
     base_url=LM_STUDIO_BASE_URL,
-    api_key="lm-studio",
+    api_key=LM_STUDIO_API_KEY,
     model=MODEL_NAME,
     temperature=0,
     max_tokens=96,
@@ -80,7 +78,7 @@ RENDER_SYSTEM_PROMPT = """
 
 llm_renderer = ChatOpenAI(
     base_url=LM_STUDIO_BASE_URL,
-    api_key="lm-studio",
+    api_key=LM_STUDIO_API_KEY,
     model=MODEL_NAME,
     temperature=0,
     max_tokens=96,
@@ -107,7 +105,7 @@ FOLLOWUP_SYSTEM_PROMPT = """
 
 llm_followup = ChatOpenAI(
     base_url=LM_STUDIO_BASE_URL,
-    api_key="lm-studio",
+    api_key=LM_STUDIO_API_KEY,
     model=MODEL_NAME,
     temperature=0,
     max_tokens=128,
@@ -135,7 +133,7 @@ DRIFT_SYSTEM_PROMPT = """
 
 llm_drift = ChatOpenAI(
     base_url=LM_STUDIO_BASE_URL,
-    api_key="lm-studio",
+    api_key=LM_STUDIO_API_KEY,
     model=MODEL_NAME,
     temperature=0,
     max_tokens=48,

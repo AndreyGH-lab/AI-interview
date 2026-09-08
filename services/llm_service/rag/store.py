@@ -7,6 +7,8 @@ import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
+from shared.config import EMBEDDING_MODEL_NAME
+
 
 
 BASE_DIR = Path(__file__).resolve().parents[3]
@@ -17,9 +19,6 @@ INDEX_DIR = BASE_DIR / "shared" / "questions" / "index"
 FAISS_INDEX_PATH = INDEX_DIR / "questions.faiss"
 META_PATH = INDEX_DIR / "questions_meta.json"
 
-
-#Model
-EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 
 #Data
 @dataclass

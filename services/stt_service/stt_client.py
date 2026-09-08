@@ -1,6 +1,6 @@
 import requests
 
-STT_URL = "http://127.0.0.1:8000/transcribe"
+from shared.config import STT_URL
 
 def transcribe_audio(path: str, language: str = "ru") -> str:
     """

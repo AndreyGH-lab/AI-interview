@@ -4,12 +4,11 @@ from typing import Any, Dict, List
 
 from langchain_openai import ChatOpenAI
 
-LM_STUDIO_BASE_URL = "http://127.0.0.1:1234/v1"
-MODEL_NAME = "qwen2.5-vl-3b-instruct"
+from shared.config import LM_STUDIO_BASE_URL, LM_STUDIO_API_KEY, MODEL_NAME
 
 llm = ChatOpenAI(
     base_url=LM_STUDIO_BASE_URL,
-    api_key="lm-studio",
+    api_key=LM_STUDIO_API_KEY,
     model=MODEL_NAME,
     temperature=0,
     max_tokens=300,
