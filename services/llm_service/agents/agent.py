@@ -16,6 +16,8 @@ from langgraph.checkpoint.memory import MemorySaver
 
 from services.llm_service.rag.api import retrieve_questions, difficulty_allowed
 from services.llm_service.agents.text_utils import (
+    MIN_FOLLOWUP_LENGTH,
+    build_followup_fallback,
     safe_json_parse,
     ensure_question_prefix,
     sanitize_prefix,
@@ -27,6 +29,7 @@ from shared.config import (
     LM_STUDIO_BASE_URL,
     LM_STUDIO_API_KEY,
     MODEL_NAME,
+    PROMPT_SUFFIX,
     DRIFT_SCORE_THRESHOLD,
     ON_TOPIC_OVERRIDE_SCORE,
 )
@@ -56,7 +59,7 @@ SELECTOR_SYSTEM_PROMPT = """
 - не придумывай вопросы
 - используй только предложенные варианты
 - не выбирай id из asked_ids
-""".strip()
+""".strip() + "\n" + PROMPT_SUFFIX
 
 @lru_cache(maxsize=1)
 def get_selector_llm() -> ChatOpenAI:
@@ -65,7 +68,7 @@ def get_selector_llm() -> ChatOpenAI:
         api_key=LM_STUDIO_API_KEY,
         model=MODEL_NAME,
         temperature=0,
-        max_tokens=96,
+        max_tokens=256,
     )
 
 
@@ -83,7 +86,7 @@ RENDER_SYSTEM_PROMPT = """
 
 Формат СТРОГО JSON без markdown:
 {"prefix": "..."}
-""".strip()
+""".strip() + "\n" + PROMPT_SUFFIX
 
 @lru_cache(maxsize=1)
 def get_renderer_llm() -> ChatOpenAI:
@@ -92,7 +95,7 @@ def get_renderer_llm() -> ChatOpenAI:
         api_key=LM_STUDIO_API_KEY,
         model=MODEL_NAME,
         temperature=0,
-        max_tokens=96,
+        max_tokens=256,
     )
 
 FOLLOWUP_SYSTEM_PROMPT = """
@@ -112,7 +115,7 @@ FOLLOWUP_SYSTEM_PROMPT = """
 
 Формат:
 ОДНА строка, начинается строго с "Вопрос: "
-""".strip()
+""".strip() + "\n" + PROMPT_SUFFIX
 
 @lru_cache(maxsize=1)
 def get_followup_llm() -> ChatOpenAI:
@@ -121,7 +124,7 @@ def get_followup_llm() -> ChatOpenAI:
         api_key=LM_STUDIO_API_KEY,
         model=MODEL_NAME,
         temperature=0,
-        max_tokens=128,
+        max_tokens=384,
     )
 
 DRIFT_SYSTEM_PROMPT = """
@@ -142,7 +145,7 @@ DRIFT_SYSTEM_PROMPT = """
 - false, только если кандидат явно ушёл в другую тему и НЕ отвечает на вопрос
 - если есть небольшие отвлечения, но ответ всё равно по сути — true
 - никакого markdown, только JSON
-""".strip()
+""".strip() + "\n" + PROMPT_SUFFIX
 
 @lru_cache(maxsize=1)
 def get_drift_llm() -> ChatOpenAI:
@@ -151,7 +154,7 @@ def get_drift_llm() -> ChatOpenAI:
         api_key=LM_STUDIO_API_KEY,
         model=MODEL_NAME,
         temperature=0,
-        max_tokens=48,
+        max_tokens=128,
     )
 
 
@@ -394,14 +397,22 @@ def followup_node(state: State) -> Dict[str, Any]:
         },
     }
 
-    resp = get_followup_llm().invoke(
-        [
-            SystemMessage(content=FOLLOWUP_SYSTEM_PROMPT),
-            HumanMessage(content=json.dumps(payload, ensure_ascii=False)),
-        ]
-    )
+    msg_text = ""
+    try:
+        resp = get_followup_llm().invoke(
+            [
+                SystemMessage(content=FOLLOWUP_SYSTEM_PROMPT),
+                HumanMessage(content=json.dumps(payload, ensure_ascii=False)),
+            ]
+        )
+        msg_text = ensure_question_prefix(resp.content)
+    except Exception:
+        msg_text = ""
 
-    msg_text = ensure_question_prefix(resp.content)
+    # после обрыва генерации внутри <think> остаётся голый префикс без вопроса
+    if len(msg_text.removeprefix("Вопрос:").strip()) < MIN_FOLLOWUP_LENGTH:
+        msg_text = build_followup_fallback(q, ev.get("missed", []))
+
     return {
         "messages": [AIMessage(content=msg_text)],
         "candidates": None,

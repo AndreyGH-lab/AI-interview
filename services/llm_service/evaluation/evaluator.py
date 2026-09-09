@@ -1,18 +1,26 @@
-import json
-import re
+from functools import lru_cache
 from typing import Any, Dict, List
 
 from langchain_openai import ChatOpenAI
 
-from shared.config import LM_STUDIO_BASE_URL, LM_STUDIO_API_KEY, MODEL_NAME
-
-llm = ChatOpenAI(
-    base_url=LM_STUDIO_BASE_URL,
-    api_key=LM_STUDIO_API_KEY,
-    model=MODEL_NAME,
-    temperature=0,
-    max_tokens=300,
+from services.llm_service.agents.text_utils import safe_json_parse
+from shared.config import (
+    LM_STUDIO_BASE_URL,
+    LM_STUDIO_API_KEY,
+    MODEL_NAME,
+    PROMPT_SUFFIX,
 )
+
+
+@lru_cache(maxsize=1)
+def get_evaluator_llm() -> ChatOpenAI:
+    return ChatOpenAI(
+        base_url=LM_STUDIO_BASE_URL,
+        api_key=LM_STUDIO_API_KEY,
+        model=MODEL_NAME,
+        temperature=0,
+        max_tokens=512,
+    )
 
 SYSTEM_PROMPT = """
 Ты — технический интервьюер-оценщик.
@@ -26,20 +34,7 @@ SYSTEM_PROMPT = """
 не раскрыт, а 1.0 — что раскрыты все аспекты.
 "comment" должен быть на русском языке.
 Верни результат СТРОГО в формате JSON без пояснений и без markdown.
-"""
-
-def safe_json_parse(text: str) -> Dict[str, Any]:
-    """
-    Парсит JSON даже если он обёрнут в ```json ... ```
-    """
-    cleaned = text.strip()
-
-    cleaned = re.sub(r"^```json\s*", "", cleaned, flags=re.IGNORECASE)
-    cleaned = re.sub(r"^```", "", cleaned)
-    cleaned = re.sub(r"\s*```$", "", cleaned)
-
-    return json.loads(cleaned)
-
+""" + PROMPT_SUFFIX  # промпт уже заканчивается переводом строки
 
 def _clamp_score(value: Any) -> float:
     """
@@ -80,7 +75,7 @@ def evaluate_answer(
 }}
 """
 
-    response = llm.invoke(
+    response = get_evaluator_llm().invoke(
         [
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -102,11 +97,16 @@ def evaluate_answer(
 
     except Exception as e:
         #Никогда не роняем пайплайн
+        if not (raw_text or "").strip():
+            comment = "Модель вернула пустой ответ"
+        else:
+            comment = "Не удалось разобрать JSON в ответе модели"
+
         return {
             "covered": [],
             "missed": rubric,
             "score": 0.0,
-            "comment": "Ошибка разбора ответа модели",
+            "comment": comment,
             "raw": raw_text,
             "error": str(e),
         }

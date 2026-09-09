@@ -10,10 +10,55 @@ import json
 import pytest
 
 from services.llm_service.agents.text_utils import (
+    MIN_FOLLOWUP_LENGTH,
+    build_followup_fallback,
     ensure_question_prefix,
     safe_json_parse,
     sanitize_prefix,
+    strip_reasoning,
 )
+
+
+class TestStripReasoning:
+    def test_закрытый_блок_вырезается(self):
+        raw = "<think>Прикидываю варианты</think>Полезный ответ"
+        assert strip_reasoning(raw) == "Полезный ответ"
+
+    def test_блок_с_атрибутами_в_теге(self):
+        raw = '<think type="internal">рассуждение</think>Ответ'
+        assert strip_reasoning(raw) == "Ответ"
+
+    def test_регистр_тега_игнорируется(self):
+        assert strip_reasoning("<THINK>шум</THINK>Ответ") == "Ответ"
+
+    def test_многострочный_блок(self):
+        raw = "<think>\nстрока раз\nстрока два\n</think>\nОтвет"
+        assert strip_reasoning(raw) == "Ответ"
+
+    def test_несколько_блоков_подряд(self):
+        raw = "<think>раз</think>А<think>два</think>Б"
+        assert strip_reasoning(raw) == "АБ"
+
+    def test_незакрытый_think_даёт_пустую_строку(self):
+        assert strip_reasoning("<think>генерация оборвалась на полуслове") == ""
+
+    def test_закрытый_и_следом_незакрытый(self):
+        # первый блок вырезан, второй оборван — полезного текста нет
+        raw = "<think>раз</think>Ответ<think>обрыв"
+        assert strip_reasoning(raw) == ""
+
+    def test_текст_без_think_не_меняется(self):
+        assert strip_reasoning("Просто ответ без рассуждений") == "Просто ответ без рассуждений"
+
+    def test_json_без_think_не_меняется(self):
+        assert strip_reasoning('{"score": 1.0}') == '{"score": 1.0}'
+
+    @pytest.mark.parametrize("value", ["", "   ", None])
+    def test_пустой_вход(self, value):
+        assert strip_reasoning(value) == ""
+
+    def test_окружающие_пробелы_обрезаются(self):
+        assert strip_reasoning("  <think>шум</think>  Ответ  ") == "Ответ"
 
 
 class TestSafeJsonParse:
@@ -48,6 +93,22 @@ class TestSafeJsonParse:
         with pytest.raises(json.JSONDecodeError):
             safe_json_parse(raw)
 
+    def test_think_с_фигурными_скобками_перед_json(self):
+        # без вырезания <think> поиск r"\{.*\}" выдернул бы мусор из рассуждения
+        raw = (
+            '<think>Возьмём формат {"score": 0.1} для примера, но это черновик</think>\n'
+            '{"score": 0.9, "covered": ["a"]}'
+        )
+        assert safe_json_parse(raw) == {"score": 0.9, "covered": ["a"]}
+
+    def test_think_и_json_в_markdown_обёртке(self):
+        raw = '<think>прикидываю</think>\n```json\n{"score": 0.5}\n```'
+        assert safe_json_parse(raw) == {"score": 0.5}
+
+    def test_незакрытый_think_бросает_JSONDecodeError(self):
+        with pytest.raises(json.JSONDecodeError):
+            safe_json_parse('<think>оборвалось на {"score":')
+
 
 class TestEnsureQuestionPrefix:
     def test_префикс_не_дублируется(self):
@@ -67,6 +128,17 @@ class TestEnsureQuestionPrefix:
 
     def test_окружающие_пробелы_обрезаются(self):
         assert ensure_question_prefix("   Что такое MLOps?   ") == "Вопрос: Что такое MLOps?"
+
+    def test_think_вырезается_до_добавления_префикса(self):
+        raw = "<think>надо уточнить про мониторинг</think>Вопрос: А как мониторишь дрейф?"
+        assert ensure_question_prefix(raw) == "Вопрос: А как мониторишь дрейф?"
+
+    def test_think_без_префикса_получает_префикс(self):
+        raw = "<think>рассуждение</think>А как мониторишь дрейф?"
+        assert ensure_question_prefix(raw) == "Вопрос: А как мониторишь дрейф?"
+
+    def test_незакрытый_think_даёт_только_префикс(self):
+        assert ensure_question_prefix("<think>оборвалось") == "Вопрос: "
 
 
 class TestSanitizePrefix:
@@ -136,3 +208,58 @@ class TestSanitizePrefix:
     def test_короткий_вопрос_не_проверяется_на_пересечение(self):
         # вопрос короче 20 символов — правило пересечения не применяется
         assert sanitize_prefix("Ясно, теперь дальше", "Что дальше") == "Ясно, теперь дальше."
+
+
+class TestBuildFollowupFallback:
+    QUESTION = "Из каких этапов состоит типичный ML-пайплайн в продакшене?"
+
+    def test_пустой_missed_повторяет_вопрос(self):
+        result = build_followup_fallback(self.QUESTION, [])
+        assert result == f"Вопрос: Давай вернёмся к вопросу. {self.QUESTION}"
+        assert "Отдельно остановись" not in result
+
+    @pytest.mark.parametrize("missed", [None, [], ["", "   "]])
+    def test_missed_без_полезных_пунктов(self, missed):
+        result = build_followup_fallback(self.QUESTION, missed)
+        assert "Отдельно остановись" not in result
+
+    def test_один_пункт_missed(self):
+        result = build_followup_fallback(self.QUESTION, ["мониторинг дрейфа"])
+        assert result == (
+            f"Вопрос: Давай вернёмся к вопросу. {self.QUESTION}"
+            " Отдельно остановись на: мониторинг дрейфа"
+        )
+
+    def test_несколько_пунктов_берётся_первый(self):
+        result = build_followup_fallback(self.QUESTION, ["деплой", "мониторинг", "откат"])
+        assert result.endswith("Отдельно остановись на: деплой")
+        assert "мониторинг" not in result
+
+    def test_первый_пустой_пункт_пропускается(self):
+        result = build_followup_fallback(self.QUESTION, ["  ", "деплой"])
+        assert result.endswith("Отдельно остановись на: деплой")
+
+    def test_вопрос_без_знака_вопроса(self):
+        question = "Расскажи про версионирование данных"
+        result = build_followup_fallback(question, ["DVC"])
+        assert result == (
+            f"Вопрос: Давай вернёмся к вопросу. {question}"
+            " Отдельно остановись на: DVC"
+        )
+
+    def test_пустой_вопрос(self):
+        assert build_followup_fallback("", []) == "Вопрос: Давай вернёмся к предыдущему вопросу."
+
+    def test_нестроковый_пункт_missed(self):
+        result = build_followup_fallback(self.QUESTION, [42])
+        assert result.endswith("Отдельно остановись на: 42")
+
+    def test_всегда_начинается_с_префикса(self):
+        for missed in ([], ["деплой"]):
+            assert build_followup_fallback(self.QUESTION, missed).startswith("Вопрос: ")
+
+    def test_результат_проходит_порог_длины(self):
+        # fallback обязан быть длиннее порога, иначе followup_node зациклится на нём
+        for question, missed in [(self.QUESTION, []), ("", []), ("Коротко?", ["a"])]:
+            result = build_followup_fallback(question, missed)
+            assert len(result.removeprefix("Вопрос:").strip()) >= MIN_FOLLOWUP_LENGTH

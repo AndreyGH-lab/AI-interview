@@ -7,11 +7,30 @@
 
 import json
 import re
-from typing import Any, Dict
+from typing import Any, Dict, List, Optional
+
+
+def strip_reasoning(text: str) -> str:
+    """
+    Убирает блоки рассуждений reasoning-моделей (<think>...</think>).
+    """
+    cleaned = re.sub(
+        r"<think\b[^>]*>.*?</think>",
+        "",
+        text or "",
+        flags=re.DOTALL | re.IGNORECASE,
+    )
+
+    # незакрытый <think> означает, что генерация оборвалась внутри
+    # рассуждения — полезного текста после него уже не будет
+    if re.search(r"<think\b[^>]*>", cleaned, flags=re.IGNORECASE):
+        return ""
+
+    return cleaned.strip()
 
 
 def safe_json_parse(text: str) -> Dict[str, Any]:
-    cleaned = text.strip()
+    cleaned = strip_reasoning(text)
     cleaned = re.sub(r"^```json\s*", "", cleaned, flags=re.IGNORECASE)
     cleaned = re.sub(r"^```", "", cleaned)
     cleaned = re.sub(r"\s*```$", "", cleaned)
@@ -22,10 +41,33 @@ def safe_json_parse(text: str) -> Dict[str, Any]:
 
 
 def ensure_question_prefix(text: str) -> str:
-    t = (text or "").strip().replace("\n", " ")
+    t = strip_reasoning(text).replace("\n", " ").strip()
     if not t.startswith("Вопрос:"):
         t = "Вопрос: " + t
     return t
+
+
+MIN_FOLLOWUP_LENGTH = 15
+
+
+def build_followup_fallback(question: str, missed: Optional[List[Any]] = None) -> str:
+    """
+    Детерминированный уточняющий вопрос на случай, когда модель не выдала
+    пригодного текста. Собирается без обращения к LLM.
+    """
+    q = (question or "").strip()
+    text = f"Вопрос: Давай вернёмся к вопросу. {q}" if q else "Вопрос: Давай вернёмся к предыдущему вопросу."
+
+    first_missed = ""
+    for item in missed or []:
+        first_missed = str(item).strip()
+        if first_missed:
+            break
+
+    if first_missed:
+        text += f" Отдельно остановись на: {first_missed}"
+
+    return text
 
 
 def sanitize_prefix(prefix: str, original_question: str) -> str:
