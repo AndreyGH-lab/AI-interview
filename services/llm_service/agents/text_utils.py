@@ -49,6 +49,12 @@ def ensure_question_prefix(text: str) -> str:
 
 MIN_FOLLOWUP_LENGTH = 15
 
+# Отбраковка подводки, пересекающейся с rubric: значимым считается слово
+# длиной от RUBRIC_MIN_WORD_LENGTH, сравнение идёт по первым
+# RUBRIC_STEM_LENGTH символам основы ("версионирование" ~ "версионировать").
+RUBRIC_MIN_WORD_LENGTH = 5
+RUBRIC_STEM_LENGTH = 6
+
 
 def build_followup_fallback(question: str, missed: Optional[List[Any]] = None) -> str:
     """
@@ -70,7 +76,11 @@ def build_followup_fallback(question: str, missed: Optional[List[Any]] = None) -
     return text
 
 
-def sanitize_prefix(prefix: str, original_question: str) -> str:
+def sanitize_prefix(
+    prefix: str,
+    original_question: str,
+    rubric: Optional[List[str]] = None,
+) -> str:
     p = (prefix or "").strip().replace("\n", " ")
     q = (original_question or "").strip()
     if not p:
@@ -103,7 +113,28 @@ def sanitize_prefix(prefix: str, original_question: str) -> str:
     if len(q) >= 20 and (low_q[:20] in low_p or low_q[-20:] in low_p):
         return ""
 
+    if _overlaps_rubric(low_p, rubric):
+        return ""
+
     if not p.endswith((".", ":", "—")):
         p += "."
 
     return p
+
+
+def _overlaps_rubric(low_prefix: str, rubric: Optional[List[Any]]) -> bool:
+    """
+    True, если подводка раскрывает содержание rubric: значимое слово из
+    любого пункта встречается в ней по началу основы.
+    """
+    for item in rubric or []:
+        for word in re.findall(r"\w+", str(item).lower()):
+            if len(word) < RUBRIC_MIN_WORD_LENGTH:
+                continue
+            stem = word[:RUBRIC_STEM_LENGTH]
+            if any(
+                token.startswith(stem)
+                for token in re.findall(r"\w+", low_prefix)
+            ):
+                return True
+    return False

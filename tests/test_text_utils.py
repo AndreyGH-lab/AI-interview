@@ -263,3 +263,72 @@ class TestBuildFollowupFallback:
         for question, missed in [(self.QUESTION, []), ("", []), ("Коротко?", ["a"])]:
             result = build_followup_fallback(question, missed)
             assert len(result.removeprefix("Вопрос:").strip()) >= MIN_FOLLOWUP_LENGTH
+
+
+class TestSanitizePrefixRubric:
+    QUESTION = "Почему важно версионировать модели и данные?"
+    RUBRIC = [
+        "версионирование моделей и данных",
+        "воспроизводимость экспериментов",
+        "откат к предыдущей версии",
+    ]
+
+    def test_случай_из_прогона_отбраковывается(self):
+        # реальный вывод модели: подводка пересказывала rubric этого же вопроса
+        prefix = "Версионирование помогает сохранять историю изменений"
+        assert sanitize_prefix(prefix, self.QUESTION, self.RUBRIC) == ""
+
+    def test_другая_форма_слова_отбраковывается(self):
+        # "версионирование" в подводке против "версионировать" в rubric
+        assert sanitize_prefix("Версионирование это полезно", self.QUESTION, ["версионировать модели"]) == ""
+
+    @pytest.mark.parametrize(
+        "prefix",
+        [
+            "Воспроизводимость тут ключевая",
+            "Речь про откат изменений",
+            "Эксперименты стоит фиксировать",
+        ],
+    )
+    def test_любой_пункт_rubric_отбраковывает(self, prefix):
+        assert sanitize_prefix(prefix, self.QUESTION, self.RUBRIC) == ""
+
+    @pytest.mark.parametrize(
+        "prefix",
+        [
+            "Понятно",
+            "Хорошо, идём дальше",
+            "Спасибо, зафиксировал",
+            "Ясно, тогда следующий момент",
+        ],
+    )
+    def test_нейтральная_связка_проходит(self, prefix):
+        result = sanitize_prefix(prefix, self.QUESTION, self.RUBRIC)
+        assert result == prefix + "."
+
+    def test_rubric_none_ведёт_себя_как_раньше(self):
+        prefix = "Версионирование помогает сохранять историю"
+        # без rubric содержательный фильтр не применяется
+        assert sanitize_prefix(prefix, self.QUESTION, None) == prefix + "."
+        assert sanitize_prefix(prefix, self.QUESTION) == prefix + "."
+
+    def test_пустой_rubric(self):
+        prefix = "Версионирование помогает сохранять историю"
+        assert sanitize_prefix(prefix, self.QUESTION, []) == prefix + "."
+
+    def test_пункт_из_коротких_слов_не_отбраковывает(self):
+        # слова короче RUBRIC_MIN_WORD_LENGTH значимыми не считаются
+        assert sanitize_prefix("Ну да, тут всё ясно", self.QUESTION, ["ROC AUC", "F1"]) == "Ну да, тут всё ясно."
+
+    def test_граница_длины_значимого_слова(self):
+        # "дрейф" — ровно RUBRIC_MIN_WORD_LENGTH символов, значимое
+        assert sanitize_prefix("Дрейф тут важен", self.QUESTION, ["дрейф данных"]) == ""
+        # "ETL" короче порога — совпадение не считается
+        assert sanitize_prefix("ETL тут важен", self.QUESTION, ["ETL"]) == "ETL тут важен."
+
+    def test_rubric_с_нестроковыми_пунктами(self):
+        assert sanitize_prefix("Хорошо, дальше", self.QUESTION, [None, 42]) == "Хорошо, дальше."
+
+    def test_форма_проверяется_раньше_содержания(self):
+        # вопросительный знак отсекается до проверки rubric
+        assert sanitize_prefix("Версионирование?", self.QUESTION, self.RUBRIC) == ""
