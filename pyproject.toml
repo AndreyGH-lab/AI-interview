@@ -18,3 +18,13 @@ dependencies = [
     "transformers>=4.41,<4.45",
     "huggingface-hub>=0.23,<1.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+# корень проекта в sys.path, чтобы работал импорт services.*
+pythonpath = ["."]
+testpaths = ["tests"]
