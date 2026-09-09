@@ -14,7 +14,7 @@ load_dotenv()
 
 LM_STUDIO_BASE_URL = os.getenv("LM_STUDIO_BASE_URL", "http://127.0.0.1:1234/v1")
 LM_STUDIO_API_KEY = os.getenv("LM_STUDIO_API_KEY", "lm-studio")
-MODEL_NAME = os.getenv("MODEL_NAME", "qwen2.5-vl-3b-instruct")
+MODEL_NAME = os.getenv("MODEL_NAME", "qwen/qwen3-8b")
 
 STT_URL = os.getenv("STT_URL", "http://127.0.0.1:8000/transcribe")
 

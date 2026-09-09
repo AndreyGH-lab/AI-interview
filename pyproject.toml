@@ -1,7 +1,7 @@
 [project]
 name = "orchestrator"
 version = "0.1.0"
-description = "Add your description here"
+description = "ИИ-интервьюер по ML и MLOps: LangGraph-агент, FAISS-ретривал, Gradio UI"
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
 dependencies = [
@@ -14,6 +14,7 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "tavily-python>=0.7.13",
     "sentence-transformers",
+    "torch",
     "faiss-cpu",
     "transformers>=4.41,<4.45",
     "huggingface-hub>=0.23,<1.0",
@@ -28,3 +29,15 @@ dev = [
 # корень проекта в sys.path, чтобы работал импорт services.*
 pythonpath = ["."]
 testpaths = ["tests"]
+
+# torch берём из CPU-индекса: на Linux обычная сборка тянет ~3 ГБ
+# библиотек CUDA, которые сервису не нужны — эмбеддинги считаются на CPU.
+# torch указан в dependencies явно, потому что tool.uv.sources
+# действует только на прямые зависимости, а не на транзитивные.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
