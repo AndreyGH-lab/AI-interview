@@ -56,6 +56,8 @@ def sanitize_prefix(prefix: str, original_question: str) -> str:
         return ""
 
 
+    # ветка low_q[-20:] недостижима для вопросов, заканчивающихся на "?":
+    # префикс с "?" отсеивается проверкой выше
     if len(q) >= 20 and (low_q[:20] in low_p or low_q[-20:] in low_p):
         return ""
 
