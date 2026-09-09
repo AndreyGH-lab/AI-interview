@@ -1,5 +1,9 @@
 services:
+  # Опциональный сервис распознавания речи. Поднимается только явно:
+  #     docker compose --profile stt up
+  # Реализация эндпоинта /transcribe в репозиторий не входит, см. README.
   stt:
+    profiles: ["stt"]
     build:
       context: .
       dockerfile: Dockerfile.stt
@@ -32,9 +36,6 @@ services:
       GRADIO_SERVER_NAME: "0.0.0.0"
       GRADIO_SERVER_PORT: "7860"
       PYTHONUNBUFFERED: "1"
-    depends_on:
-      stt:
-        condition: service_healthy
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"
