@@ -23,6 +23,8 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=8.0",
+    # нужен только бенчмарку ретривала: лексический бейзлайн на TF-IDF
+    "scikit-learn>=1.3",
 ]
 
 [tool.pytest.ini_options]

@@ -1,0 +1,28 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	prepare(prepare)
+	init_question(init_question)
+	evaluate(evaluate)
+	followup(followup)
+	retrieve(retrieve)
+	select(select)
+	render(render)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> prepare;
+	evaluate -.-> followup;
+	evaluate -.-> retrieve;
+	init_question --> render;
+	prepare -.-> evaluate;
+	prepare -.-> init_question;
+	retrieve --> select;
+	select --> render;
+	followup --> __end__;
+	render --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

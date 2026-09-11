@@ -1,0 +1,121 @@
+[
+  {
+    "id": "mlops_jun_009",
+    "domain": "mlops",
+    "topic": "dependencies",
+    "difficulty": "junior",
+    "question": "Зачем фиксировать версии зависимостей проекта?",
+    "rubric": [
+      "одинаковое окружение у всех",
+      "защита от ломающих обновлений",
+      "lock-файл как источник правды"
+    ],
+    "tags": [
+      "mlops",
+      "environment"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_jun_010",
+    "domain": "mlops",
+    "topic": "config",
+    "difficulty": "junior",
+    "question": "Как хранить конфигурацию и секреты сервиса?",
+    "rubric": [
+      "переменные окружения вместо хардкода",
+      "секреты не попадают в репозиторий",
+      "разные значения для разных сред"
+    ],
+    "tags": [
+      "mlops",
+      "config"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_jun_011",
+    "domain": "mlops",
+    "topic": "serving",
+    "difficulty": "junior",
+    "question": "Как обученную модель отдают наружу как сервис?",
+    "rubric": [
+      "HTTP-эндпоинт с предсказанием",
+      "загрузка модели при старте, а не на каждый запрос",
+      "валидация входных данных"
+    ],
+    "tags": [
+      "mlops",
+      "serving"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_jun_012",
+    "domain": "mlops",
+    "topic": "batch_vs_online",
+    "difficulty": "junior",
+    "question": "Чем batch-инференс отличается от онлайн-инференса?",
+    "rubric": [
+      "batch считает пачкой по расписанию",
+      "online отвечает на запрос в реальном времени",
+      "разные требования к latency"
+    ],
+    "tags": [
+      "mlops",
+      "serving"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_jun_013",
+    "domain": "mlops",
+    "topic": "testing",
+    "difficulty": "junior",
+    "question": "Что тестируют в ML-проекте кроме самой модели?",
+    "rubric": [
+      "код препроцессинга и пайплайна",
+      "формат и схема данных",
+      "контракт сервиса"
+    ],
+    "tags": [
+      "mlops",
+      "testing"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_jun_014",
+    "domain": "mlops",
+    "topic": "reproducibility",
+    "difficulty": "junior",
+    "question": "Что нужно, чтобы эксперимент воспроизвёлся заново?",
+    "rubric": [
+      "зафиксированный seed",
+      "версии данных и кода",
+      "сохранённые гиперпараметры и окружение"
+    ],
+    "tags": [
+      "mlops",
+      "reproducibility"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_jun_015",
+    "domain": "mlops",
+    "topic": "model_format",
+    "difficulty": "junior",
+    "question": "Как сохраняют обученную модель для продакшена?",
+    "rubric": [
+      "сериализация весов в файл",
+      "форматы обмена (ONNX, TorchScript)",
+      "совместимость версий библиотек"
+    ],
+    "tags": [
+      "mlops",
+      "artifacts"
+    ],
+    "author": "assistant"
+  }
+]

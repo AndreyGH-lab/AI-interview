@@ -1,0 +1,189 @@
+[
+  {
+    "id": "mlops_sen_005",
+    "domain": "mlops",
+    "topic": "multi_model",
+    "difficulty": "senior",
+    "question": "Как обслуживать десятки моделей в одном сервисе?",
+    "rubric": [
+      "динамическая загрузка и выгрузка моделей",
+      "изоляция по ресурсам",
+      "единый контракт и маршрутизация запросов"
+    ],
+    "tags": [
+      "mlops",
+      "serving"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_sen_006",
+    "domain": "mlops",
+    "topic": "retraining_automation",
+    "difficulty": "senior",
+    "question": "Как построить автоматическое переобучение модели?",
+    "rubric": [
+      "триггер по времени, объёму данных или деградации",
+      "автоматическая валидация перед выкаткой",
+      "возможность остановить и откатить"
+    ],
+    "tags": [
+      "mlops",
+      "automation"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_sen_007",
+    "domain": "mlops",
+    "topic": "incident",
+    "difficulty": "senior",
+    "question": "Как ты разбираешь инцидент с деградацией модели в продакшене?",
+    "rubric": [
+      "локализация: данные, код или внешние изменения",
+      "откат как первый шаг, разбор потом",
+      "постмортем и защита от повторения"
+    ],
+    "tags": [
+      "mlops",
+      "reliability"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_sen_008",
+    "domain": "mlops",
+    "topic": "sla",
+    "difficulty": "senior",
+    "question": "Как формулировать SLA для ML-сервиса?",
+    "rubric": [
+      "доступность и время ответа",
+      "отдельно качество предсказаний",
+      "что считается деградацией и кто за неё отвечает"
+    ],
+    "tags": [
+      "mlops",
+      "reliability"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_sen_009",
+    "domain": "mlops",
+    "topic": "privacy",
+    "difficulty": "senior",
+    "question": "Как работать с персональными данными в ML-пайплайне?",
+    "rubric": [
+      "минимизация и обезличивание",
+      "контроль доступа и аудит",
+      "требования регуляторов к хранению"
+    ],
+    "tags": [
+      "mlops",
+      "security"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_sen_010",
+    "domain": "mlops",
+    "topic": "llm_serving",
+    "difficulty": "senior",
+    "question": "Что учитывать при выкатке большой языковой модели в продакшен?",
+    "rubric": [
+      "стоимость и потребление памяти",
+      "непредсказуемость вывода и её ограничение",
+      "кэширование и контроль стоимости запроса"
+    ],
+    "tags": [
+      "mlops",
+      "llm"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_sen_011",
+    "domain": "mlops",
+    "topic": "eval_harness",
+    "difficulty": "senior",
+    "question": "Как построить регрессионное тестирование качества моделей?",
+    "rubric": [
+      "фиксированный набор эталонных примеров",
+      "автоматический прогон на каждой версии",
+      "порог, ниже которого выкатка блокируется"
+    ],
+    "tags": [
+      "mlops",
+      "testing"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_sen_012",
+    "domain": "mlops",
+    "topic": "research_to_prod",
+    "difficulty": "senior",
+    "question": "Как выстроить переход модели из research в production?",
+    "rubric": [
+      "общий формат передачи модели и кода",
+      "критерии готовности к выкатке",
+      "ответственность после релиза"
+    ],
+    "tags": [
+      "mlops",
+      "process"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_sen_013",
+    "domain": "mlops",
+    "topic": "build_vs_buy",
+    "difficulty": "senior",
+    "question": "Как выбирать между managed-сервисом и собственной инфраструктурой?",
+    "rubric": [
+      "стоимость владения против скорости старта",
+      "зависимость от поставщика",
+      "требования к данным и контролю"
+    ],
+    "tags": [
+      "mlops",
+      "architecture"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_sen_014",
+    "domain": "mlops",
+    "topic": "distributed_training",
+    "difficulty": "senior",
+    "question": "Как масштабировать обучение на несколько GPU или узлов?",
+    "rubric": [
+      "data parallel и model parallel",
+      "накладные расходы на обмен градиентами",
+      "влияние на batch size и learning rate"
+    ],
+    "tags": [
+      "mlops",
+      "training"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_sen_015",
+    "domain": "mlops",
+    "topic": "rag_production",
+    "difficulty": "senior",
+    "question": "Что учитывать при эксплуатации RAG-системы?",
+    "rubric": [
+      "качество ретривала отдельно от качества генерации",
+      "обновление и переиндексация базы знаний",
+      "контроль галлюцинаций и ссылок на источник"
+    ],
+    "tags": [
+      "mlops",
+      "llm"
+    ],
+    "author": "assistant"
+  }
+]

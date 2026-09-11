@@ -1,0 +1,104 @@
+[
+  {
+    "id": "ml_mid_010",
+    "domain": "ml",
+    "topic": "gradient_boosting",
+    "difficulty": "middle",
+    "question": "Чем градиентный бустинг отличается от случайного леса?",
+    "rubric": [
+      "бустинг строит деревья последовательно на ошибках предыдущих",
+      "лес строит деревья независимо и усредняет",
+      "бустинг точнее, но чувствительнее к переобучению"
+    ],
+    "tags": [
+      "ml",
+      "ensemble"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "ml_mid_011",
+    "domain": "ml",
+    "topic": "hyperparameter_tuning",
+    "difficulty": "middle",
+    "question": "Как ты подбираешь гиперпараметры модели?",
+    "rubric": [
+      "grid search и random search",
+      "байесовская оптимизация",
+      "подбор только по валидации, не по тесту"
+    ],
+    "tags": [
+      "ml",
+      "validation"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "ml_mid_012",
+    "domain": "ml",
+    "topic": "dimensionality_reduction",
+    "difficulty": "middle",
+    "question": "Зачем снижают размерность признакового пространства?",
+    "rubric": [
+      "борьба с проклятием размерности",
+      "ускорение обучения",
+      "визуализация и удаление шума"
+    ],
+    "tags": [
+      "ml",
+      "features"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "ml_mid_013",
+    "domain": "ml",
+    "topic": "clustering",
+    "difficulty": "middle",
+    "question": "Как выбрать число кластеров в k-means?",
+    "rubric": [
+      "метод локтя по inertia",
+      "silhouette score",
+      "доменные соображения"
+    ],
+    "tags": [
+      "ml",
+      "clustering"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "ml_mid_014",
+    "domain": "ml",
+    "topic": "embeddings",
+    "difficulty": "middle",
+    "question": "Что такое эмбеддинги и какую задачу они решают?",
+    "rubric": [
+      "плотное векторное представление объекта",
+      "близкие по смыслу объекты близки в пространстве",
+      "замена разреженных представлений"
+    ],
+    "tags": [
+      "ml",
+      "representation"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "ml_mid_015",
+    "domain": "ml",
+    "topic": "calibration",
+    "difficulty": "middle",
+    "question": "Что такое калибровка вероятностей и когда она нужна?",
+    "rubric": [
+      "предсказанная вероятность должна отражать реальную частоту",
+      "Platt scaling, isotonic regression",
+      "важна там, где вероятность используется в решении"
+    ],
+    "tags": [
+      "ml",
+      "metrics"
+    ],
+    "author": "assistant"
+  }
+]

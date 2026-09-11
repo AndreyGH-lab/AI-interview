@@ -1,0 +1,121 @@
+[
+  {
+    "id": "mlops_mid_009",
+    "domain": "mlops",
+    "topic": "model_registry",
+    "difficulty": "middle",
+    "question": "Что такое model registry и какую задачу он решает?",
+    "rubric": [
+      "каталог версий моделей с метаданными",
+      "стадии жизненного цикла (staging, production)",
+      "связь модели с экспериментом и данными"
+    ],
+    "tags": [
+      "mlops",
+      "registry"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_mid_010",
+    "domain": "mlops",
+    "topic": "shadow",
+    "difficulty": "middle",
+    "question": "Что такое shadow-режим при выкатке модели?",
+    "rubric": [
+      "новая модель получает реальный трафик, но её ответы не показываются",
+      "сравнение с текущей моделью без риска",
+      "проверка нагрузки и стабильности"
+    ],
+    "tags": [
+      "mlops",
+      "deployment"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_mid_011",
+    "domain": "mlops",
+    "topic": "orchestration",
+    "difficulty": "middle",
+    "question": "Зачем нужны оркестраторы пайплайнов вроде Airflow или Kubeflow?",
+    "rubric": [
+      "расписание и зависимости между шагами",
+      "повторный запуск упавших шагов",
+      "наблюдаемость выполнения"
+    ],
+    "tags": [
+      "mlops",
+      "orchestration"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_mid_012",
+    "domain": "mlops",
+    "topic": "hardware",
+    "difficulty": "middle",
+    "question": "Когда для инференса нужен GPU, а когда достаточно CPU?",
+    "rubric": [
+      "размер модели и объём вычислений",
+      "требования по latency и нагрузке",
+      "стоимость против выигрыша"
+    ],
+    "tags": [
+      "mlops",
+      "infra"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_mid_013",
+    "domain": "mlops",
+    "topic": "data_versioning",
+    "difficulty": "middle",
+    "question": "Как версионировать датасеты?",
+    "rubric": [
+      "хранение снапшотов или ссылок на неизменяемые данные",
+      "инструменты вроде DVC",
+      "связь версии данных с версией модели"
+    ],
+    "tags": [
+      "mlops",
+      "data"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_mid_014",
+    "domain": "mlops",
+    "topic": "alerting",
+    "difficulty": "middle",
+    "question": "Как настроить алерты на деградацию модели?",
+    "rubric": [
+      "пороги по метрикам качества и распределениям",
+      "прокси-метрики, когда разметка приходит с задержкой",
+      "борьба с ложными срабатываниями"
+    ],
+    "tags": [
+      "mlops",
+      "monitoring"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "mlops_mid_015",
+    "domain": "mlops",
+    "topic": "training_serving_skew",
+    "difficulty": "middle",
+    "question": "Что такое training-serving skew и как его избежать?",
+    "rubric": [
+      "признаки на обучении и в проде считаются по-разному",
+      "общий код препроцессинга",
+      "проверка распределений на обеих сторонах"
+    ],
+    "tags": [
+      "mlops",
+      "pitfalls"
+    ],
+    "author": "assistant"
+  }
+]

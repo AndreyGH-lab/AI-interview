@@ -1,0 +1,121 @@
+[
+  {
+    "id": "ml_jun_009",
+    "domain": "ml",
+    "topic": "gradient_descent",
+    "difficulty": "junior",
+    "question": "Как работает градиентный спуск?",
+    "rubric": [
+      "движение против градиента функции потерь",
+      "шаг обучения (learning rate)",
+      "итеративное обновление весов"
+    ],
+    "tags": [
+      "ml",
+      "optimization"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "ml_jun_010",
+    "domain": "ml",
+    "topic": "loss_function",
+    "difficulty": "junior",
+    "question": "Что такое функция потерь и зачем она нужна?",
+    "rubric": [
+      "мера расхождения предсказания и правильного ответа",
+      "то, что минимизируется при обучении",
+      "разные задачи — разные функции"
+    ],
+    "tags": [
+      "ml",
+      "training"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "ml_jun_011",
+    "domain": "ml",
+    "topic": "classification_vs_regression",
+    "difficulty": "junior",
+    "question": "Чем задача классификации отличается от регрессии?",
+    "rubric": [
+      "классификация предсказывает метку класса",
+      "регрессия предсказывает число",
+      "разные метрики качества"
+    ],
+    "tags": [
+      "ml",
+      "basics"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "ml_jun_012",
+    "domain": "ml",
+    "topic": "categorical_encoding",
+    "difficulty": "junior",
+    "question": "Как подготовить категориальные признаки для модели?",
+    "rubric": [
+      "one-hot encoding",
+      "label encoding",
+      "модель работает с числами, а не со строками"
+    ],
+    "tags": [
+      "ml",
+      "preprocessing"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "ml_jun_013",
+    "domain": "ml",
+    "topic": "missing_values",
+    "difficulty": "junior",
+    "question": "Что делать с пропущенными значениями в данных?",
+    "rubric": [
+      "удаление строк или признаков",
+      "заполнение статистикой (среднее, медиана)",
+      "пропуск сам по себе может быть признаком"
+    ],
+    "tags": [
+      "ml",
+      "data"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "ml_jun_014",
+    "domain": "ml",
+    "topic": "knn",
+    "difficulty": "junior",
+    "question": "Как работает метод k ближайших соседей?",
+    "rubric": [
+      "поиск ближайших объектов по метрике расстояния",
+      "голосование или усреднение по соседям",
+      "влияние параметра k"
+    ],
+    "tags": [
+      "ml",
+      "models"
+    ],
+    "author": "assistant"
+  },
+  {
+    "id": "ml_jun_015",
+    "domain": "ml",
+    "topic": "outliers",
+    "difficulty": "junior",
+    "question": "Чем выбросы в данных мешают обучению модели?",
+    "rubric": [
+      "смещают оценки параметров",
+      "особенно чувствительны линейные модели и MSE",
+      "способы обнаружения и обработки"
+    ],
+    "tags": [
+      "ml",
+      "data"
+    ],
+    "author": "assistant"
+  }
+]
