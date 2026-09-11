@@ -10,6 +10,7 @@ import gradio as gr
 
 from services.llm_service.agents.agent import graph
 from services.stt_service.stt_client import transcribe_audio
+from shared.health import check_model_or_warn
 
 
 def _domain_choice_to_domains(choice: str) -> List[str]:
@@ -365,6 +366,8 @@ def main():
             inputs=[session_state],
             outputs=[download_out],
         )
+
+    check_model_or_warn()
 
     demo.launch()
 
