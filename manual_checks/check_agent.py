@@ -7,6 +7,8 @@ from typing import Any, Dict, Optional
 from langchain_core.messages import HumanMessage, AIMessage
 
 from services.llm_service.agents.agent import graph
+from shared.config import MODEL_NAME
+from shared.health import check_model_available
 
 
 def _last_ai_text(state: Dict[str, Any]) -> str:
@@ -35,13 +37,39 @@ def _debug_print(state: Dict[str, Any]) -> None:
     print("covered:", ev.get("covered"))
     print("missed:", ev.get("missed"))
     print("comment:", ev.get("comment"))
+    print("available:", ev.get("available"))
+    # полный текст исключения от клиента — без него 5xx не диагностировать
+    print("error:", ev.get("error"))
+
+
+_RESULTS = {"pass": 0, "fail": 0}
 
 
 def _assert(name: str, cond: bool, details: Optional[str] = None) -> None:
     if cond:
+        _RESULTS["pass"] += 1
         print(f"[PASS] {name}")
     else:
+        _RESULTS["fail"] += 1
         print(f"[FAIL] {name}" + (f" :: {details}" if details else ""))
+
+
+def _assert_evaluated(tag: str, state: Dict[str, Any]) -> bool:
+    """
+    Оценка должна быть получена от модели.
+
+    Идёт первым утверждением хода: при аварийной деградации остальные
+    утверждения выполняются, но ничего не значат — узлы отработали на
+    запасных путях, а не по назначению.
+    """
+    ev = state.get("last_evaluation") or {}
+    available = ev.get("available") is not False
+    _assert(
+        f"{tag}: оценка получена",
+        available,
+        details=str(ev.get("error") or ev.get("comment") or ""),
+    )
+    return available
 
 
 def run_turn(
@@ -79,8 +107,28 @@ def run_turn(
     return state_output
 
 
+def _require_model() -> None:
+    """
+    Прогон без работающей модели бессмысленен: все узлы уйдут на
+    аварийные пути, а утверждения про смену вопроса всё равно пройдут.
+    """
+    try:
+        check_model_available()
+    except Exception as e:
+        print("=== ПРОВЕРКА НЕ ЗАПУЩЕНА ===")
+        print(e)
+        print(
+            "\nИнтеграционная проверка требует запущенной LM Studio с загруженной "
+            f"моделью {MODEL_NAME!r}."
+        )
+        raise SystemExit(1)
+
+
 def main():
     print("\n=== TEST AGENT (RAG + Evaluation + Drift + Render prefix) ===\n")
+
+    _require_model()
+    print(f"Модель доступна: {MODEL_NAME}\n")
 
     thread_id = str(uuid4())
     config = {"configurable": {"thread_id": thread_id}}
@@ -115,6 +163,7 @@ def main():
             "Важны воспроизводимость, автоматизация (CI/CD), мониторинг, версионирование данных и моделей."
         ),
     )
+    evaluated_s2 = _assert_evaluated("S2", s2)
     _assert("S2: asked_ids увеличился", len(s2.get("asked_ids", [])) >= 2)
     _assert("S2: вопрос сменился", s2.get("last_question_id") != first_qid)
 
@@ -141,6 +190,8 @@ def main():
     after_len = len(s3.get("asked_ids", []))
     after_qid = s3.get("last_question_id")
     ai3 = _last_ai_text(s3)
+
+    evaluated_s3 = _assert_evaluated("S3", s3)
 
     # В followup ветке asked_ids обычно НЕ меняется и last_question_id остаётся прежним
     _assert(
@@ -171,6 +222,8 @@ def main():
         ),
     )
 
+    evaluated_s4 = _assert_evaluated("S4", s4)
+
     _assert(
         "S4: asked_ids вырос (перешли к следующему вопросу)",
         len(s4.get("asked_ids", [])) == before_len_4 + 1,
@@ -182,7 +235,22 @@ def main():
         details=f"before={before_qid_4}, after={s4.get('last_question_id')}",
     )
 
-    print("\n=== DONE ===\n")
+    _print_summary(live=evaluated_s2 and evaluated_s3 and evaluated_s4)
+
+
+def _print_summary(*, live: bool) -> None:
+    total = _RESULTS["pass"] + _RESULTS["fail"]
+    print(f"\n=== ИТОГ: {_RESULTS['pass']} PASS, {_RESULTS['fail']} FAIL из {total} ===")
+
+    if live:
+        print("Прогон выполнен на живой модели.")
+    else:
+        print(
+            "ВНИМАНИЕ: модель отвечала не на всех ходах — часть узлов отработала "
+            "на аварийных путях, результат прогона недостоверен."
+        )
+
+    raise SystemExit(1 if _RESULTS["fail"] else 0)
 
 
 if __name__ == "__main__":
