@@ -20,6 +20,7 @@ def get_evaluator_llm() -> ChatOpenAI:
         model=MODEL_NAME,
         temperature=0,
         max_tokens=512,
+        max_retries=4,
     )
 
 SYSTEM_PROMPT = """
@@ -75,12 +76,24 @@ def evaluate_answer(
 }}
 """
 
-    response = get_evaluator_llm().invoke(
-        [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": prompt},
-        ]
-    )
+    try:
+        response = get_evaluator_llm().invoke(
+            [
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": prompt},
+            ]
+        )
+    except Exception as e:
+        # недоступность сервера не должна выглядеть как плохой ответ кандидата
+        return {
+            "covered": [],
+            "missed": rubric,
+            "score": 0.0,
+            "comment": "Модель недоступна",
+            "raw": "",
+            "error": str(e),
+            "available": False,
+        }
 
     raw_text = response.content
 

@@ -69,6 +69,7 @@ def get_selector_llm() -> ChatOpenAI:
         model=MODEL_NAME,
         temperature=0,
         max_tokens=256,
+        max_retries=4,
     )
 
 
@@ -111,6 +112,7 @@ def get_renderer_llm() -> ChatOpenAI:
         model=MODEL_NAME,
         temperature=0,
         max_tokens=256,
+        max_retries=4,
     )
 
 FOLLOWUP_SYSTEM_PROMPT = """
@@ -140,6 +142,7 @@ def get_followup_llm() -> ChatOpenAI:
         model=MODEL_NAME,
         temperature=0,
         max_tokens=384,
+        max_retries=4,
     )
 
 DRIFT_SYSTEM_PROMPT = """
@@ -170,6 +173,7 @@ def get_drift_llm() -> ChatOpenAI:
         model=MODEL_NAME,
         temperature=0,
         max_tokens=128,
+        max_retries=4,
     )
 
 
@@ -374,6 +378,10 @@ def route_after_evaluate(state: State) -> str:
     if not answer or not rubric:
         return "retrieve"
 
+    # оценки не было: требовать доработки ответа не за что
+    if ev.get("available") is False:
+        return "retrieve"
+
     on_topic = bool(ev.get("on_topic", True))
 
     try:
@@ -508,18 +516,18 @@ def select_node(state: State) -> Dict[str, Any]:
         ],
     }
 
-    resp = get_selector_llm().invoke(
-        [
-            SystemMessage(content=SELECTOR_SYSTEM_PROMPT),
-            HumanMessage(content=json.dumps(payload, ensure_ascii=False)),
-        ]
-    )
-
     chosen_id: Optional[str] = None
     try:
+        resp = get_selector_llm().invoke(
+            [
+                SystemMessage(content=SELECTOR_SYSTEM_PROMPT),
+                HumanMessage(content=json.dumps(payload, ensure_ascii=False)),
+            ]
+        )
         data = safe_json_parse(resp.content)
         chosen_id = data.get("question_id")
     except Exception:
+        # при отказе модели ниже берётся candidates[0] — лучший по сходству
         chosen_id = None
 
     chosen: Optional[Candidate] = None
