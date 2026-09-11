@@ -3,12 +3,16 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from dataclasses import dataclass
-from typing import List, TYPE_CHECKING
+from typing import List, Optional, TYPE_CHECKING
 
 import faiss
 import numpy as np
 
-from shared.config import EMBEDDING_MODEL_NAME
+from shared.config import (
+    EMBEDDING_MODEL_NAME,
+    EMBEDDING_PASSAGE_PREFIX,
+    EMBEDDING_QUERY_PREFIX,
+)
 
 if TYPE_CHECKING:
     from sentence_transformers import SentenceTransformer
@@ -91,7 +95,9 @@ def build_and_save_index():
     questions = load_questions()
     model = SentenceTransformer(EMBEDDING_MODEL_NAME)
 
-    texts = [q.embedding_text for q in questions]
+    # префикс — деталь конкретной модели, поэтому применяется при
+    # кодировании, а не хранится в embedding_text
+    texts = [EMBEDDING_PASSAGE_PREFIX + q.embedding_text for q in questions]
     embeddings = model.encode(texts, normalize_embeddings=True)
 
     embeddings = np.array(embeddings).astype("float32")
@@ -102,7 +108,7 @@ def build_and_save_index():
 
     faiss.write_index(index, str(FAISS_INDEX_PATH))
 
-    meta = [
+    questions_meta = [
         {
             "id": q.id,
             "domain": q.domain,
@@ -115,6 +121,11 @@ def build_and_save_index():
         for q in questions
     ]
 
+    meta = {
+        "index_config": current_index_config(),
+        "questions": questions_meta,
+    }
+
     with open(META_PATH, "w", encoding="utf-8") as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
 
@@ -123,17 +134,68 @@ def build_and_save_index():
     print(f"Meta: {META_PATH}")
 
 
+REBUILD_HINT = "python -m services.llm_service.rag.store"
+
+
+def current_index_config() -> dict:
+    """
+    Конфигурация эмбеддингов, которой собирается индекс.
+    """
+    return {
+        "embedding_model_name": EMBEDDING_MODEL_NAME,
+        "query_prefix": EMBEDDING_QUERY_PREFIX,
+        "passage_prefix": EMBEDDING_PASSAGE_PREFIX,
+    }
+
+
+def check_index_config(index_config: Optional[dict]) -> None:
+    """
+    Сверяет конфигурацию индекса с текущей.
+
+    Индекс, собранный другой моделью или с другими префиксами, не даёт
+    ошибки при поиске — он молча возвращает неверные результаты.
+    """
+    current = current_index_config()
+
+    if not index_config:
+        raise ValueError(
+            "Индекс собран старой версией кода и не содержит сведений о модели. "
+            f"Пересобери его командой:\n{REBUILD_HINT}"
+        )
+
+    labels = {
+        "embedding_model_name": "модель",
+        "query_prefix": "префикс запроса",
+        "passage_prefix": "префикс документа",
+    }
+
+    for key, label in labels.items():
+        was = index_config.get(key)
+        now = current[key]
+        if was != now:
+            raise ValueError(
+                f"Индекс не соответствует конфигурации: {label} при сборке — {was!r}, "
+                f"в конфигурации — {now!r}. Пересобери индекс командой:\n{REBUILD_HINT}"
+            )
+
+
 def load_index():
     if not FAISS_INDEX_PATH.exists():
         raise FileNotFoundError(
             f"FAISS индекс не найден по пути {FAISS_INDEX_PATH}. Собери его командой:\n"
-            "python -m services.llm_service.rag.store"
+            f"{REBUILD_HINT}"
         )
 
     index = faiss.read_index(str(FAISS_INDEX_PATH))
 
     with open(META_PATH, "r", encoding="utf-8") as f:
-        meta = json.load(f)
+        raw_meta = json.load(f)
+
+    # список — формат индексов, собранных до появления сверки конфигурации
+    index_config = None if isinstance(raw_meta, list) else raw_meta.get("index_config")
+    check_index_config(index_config)
+
+    meta = raw_meta if isinstance(raw_meta, list) else raw_meta["questions"]
 
     return index, meta
 

@@ -7,6 +7,7 @@ import numpy as np
 from services.llm_service.rag.store import (
     load_index,
     EMBEDDING_MODEL_NAME,
+    EMBEDDING_QUERY_PREFIX,
 )
 
 if TYPE_CHECKING:
@@ -33,7 +34,7 @@ def search(
     index, meta = _get_index()
 
     query_embedding = _get_model().encode(
-        [query_text],
+        [EMBEDDING_QUERY_PREFIX + query_text],
         normalize_embeddings=True,
     ).astype("float32")
 

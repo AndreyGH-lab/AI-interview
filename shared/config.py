@@ -23,8 +23,14 @@ PROMPT_SUFFIX = os.getenv("PROMPT_SUFFIX", "/no_think")
 STT_URL = os.getenv("STT_URL", "http://127.0.0.1:8000/transcribe")
 
 EMBEDDING_MODEL_NAME = os.getenv(
-    "EMBEDDING_MODEL_NAME", "sentence-transformers/all-MiniLM-L6-v2"
+    "EMBEDDING_MODEL_NAME", "intfloat/multilingual-e5-base"
 )
+
+# Семейство e5 обучено различать роль текста: запрос и индексируемый
+# документ кодируются с разными префиксами. Для не-e5 модели гасятся
+# пустой строкой.
+EMBEDDING_QUERY_PREFIX = os.getenv("EMBEDDING_QUERY_PREFIX", "query: ")
+EMBEDDING_PASSAGE_PREFIX = os.getenv("EMBEDDING_PASSAGE_PREFIX", "passage: ")
 
 DRIFT_SCORE_THRESHOLD = float(os.getenv("DRIFT_SCORE_THRESHOLD", "0.45"))
 ON_TOPIC_OVERRIDE_SCORE = float(os.getenv("ON_TOPIC_OVERRIDE_SCORE", "0.80"))
